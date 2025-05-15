@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 
 public class GestionePannelloRegistrazione extends JPanel {
 
@@ -94,6 +96,7 @@ public class GestionePannelloRegistrazione extends JPanel {
                     JOptionPane.showMessageDialog(null,"Username non valido");
                 }
                 else{
+                    scrittura();
                     JOptionPane.showMessageDialog(null,"Utente registrato con successo");
                 }
             }
@@ -111,8 +114,27 @@ public class GestionePannelloRegistrazione extends JPanel {
     }
 
 
+    public void scrittura(){
+        try {
+            ArrayList<Persona> persone = lettura();
+            Persona p = new Persona(emailDaInserire.getText(),password1DaInserire.getPassword(),password2DaInserire.getPassword(),usernameDaInserire.getText());
+            persone.add(p);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("registrazione.dat"));
+            out.writeObject(persone);
+        } catch (Exception e) {
+        }
+    }
 
-
+    public ArrayList<Persona> lettura(){
+        try {
+            ObjectInputStream inp = new ObjectInputStream(new FileInputStream("registrazione.dat"));
+            return (ArrayList<Persona>) inp.readObject();
+        } catch (IOException e) {
+            return new ArrayList<>();
+        } catch (ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
+    }
 
 
 
