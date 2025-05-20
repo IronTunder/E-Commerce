@@ -64,8 +64,4 @@ public class Registrazione extends JFrame {
             }
         });
     }
-
-    public static void main(String[] args) {
-        new Registrazione();
-    }
 }
