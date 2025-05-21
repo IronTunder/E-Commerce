@@ -1,0 +1,78 @@
+package src.view.auth;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Registrazione extends JPanel {
+    private JTextField emailField = new JTextField(20);
+    private JTextField usernameField = new JTextField(20);
+    private JPasswordField passwordField = new JPasswordField(20);
+    private JPasswordField confirmPasswordField = new JPasswordField(20);
+    private JCheckBox termsCheckbox = new JCheckBox("Accetto i termini di utilizzo");
+
+    public Registrazione() {
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Campi registrazione
+        addField(gbc, 0, "Email:", emailField);
+        addField(gbc, 1, "Username:", usernameField);
+        addField(gbc, 2, "Password:", passwordField);
+        addField(gbc, 3, "Conferma Password:", confirmPasswordField);
+
+        // Checkbox termini
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        add(termsCheckbox, gbc);
+    }
+
+    private void addField(GridBagConstraints gbc, int row, String labelText, JComponent field) {
+        gbc.gridx = 0; gbc.gridy = row;
+        add(new JLabel(labelText), gbc);
+        gbc.gridx = 1;
+        add(field, gbc);
+    }
+
+    public boolean validaRegistrazione() {
+        String email = emailField.getText();
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String confirmPassword = new String(confirmPasswordField.getPassword());
+
+        if (!email.contains("@") || email.length() < 5) {
+            JOptionPane.showMessageDialog(this, "Inserire un'email valida", "Errore", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (username.length() < 4 || username.length() > 20) {
+            JOptionPane.showMessageDialog(this, "Username deve essere tra 4 e 20 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (password.length() < 8 || password.length() > 20) {
+            JOptionPane.showMessageDialog(this, "Password deve essere tra 8 e 20 caratteri", "Errore", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Le password non coincidono", "Errore", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!termsCheckbox.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Devi accettare i termini di utilizzo", "Errore", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    public String getEmail() {
+        return emailField.getText();
+    }
+
+    public String getUsername() {
+        return usernameField.getText();
+    }
+
+    public char[] getPassword() {
+        return passwordField.getPassword();
+    }
+}
