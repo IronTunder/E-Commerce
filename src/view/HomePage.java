@@ -16,6 +16,7 @@ public class HomePage extends JFrame implements ActionListener {
         super("Nucifora's Hub");
         setLayout(new BorderLayout());
         add(pannelloLaterale, BorderLayout.WEST);
+        setLocation(300,150);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1080, 720);
         setUndecorated(true);
@@ -25,6 +26,7 @@ public class HomePage extends JFrame implements ActionListener {
 
     private JMenuBar creaBarraMenu() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         menuBar.setBackground(new Color(50, 50, 50));
         menuBar.setLayout(new BorderLayout());
 
