@@ -2,14 +2,16 @@ src/
 ├── controllers/
 │   ├── AuthController.java
 ├── models/
-│   ├── User.java (rinominato da src.models.Utente.java)
+│   ├── Utente.java
 ├── views/
 │   ├── components/
-│   │   ├── SidePanel.java (rinominato da src.view.components.PannelloLaterale.java)
+│   │   ├── PannelloLaterale.java
 │   ├── auth/
 │   │   ├── LoginPanel.java
+│   │   ├── InterfacciaAuth.java
 │   │   ├── RegisterPanel.java
 │   ├── src.view.HomePage.java
 ├── utils/
 │   ├── FileManager.java
-├── App.java (nuovo punto di ingresso principale)
+├── App.java
+
