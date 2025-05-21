@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomePage extends JFrame implements ActionListener {
-    private PannelloLaterale pannelloLaterale = new PannelloLaterale();
     private InterfacciaAuth interfacciaAuth;
 
     public HomePage() {
         super("Nucifora's Hub");
         setLayout(new BorderLayout());
+        PannelloLaterale pannelloLaterale = new PannelloLaterale();
         add(pannelloLaterale, BorderLayout.WEST);
         setLocation(300,150);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

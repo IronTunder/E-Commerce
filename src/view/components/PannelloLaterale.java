@@ -2,7 +2,6 @@ package src.view.components;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class PannelloLaterale extends JPanel {
@@ -104,7 +103,7 @@ public class PannelloLaterale extends JPanel {
 
     private void caricaLogo() {
         try {
-            ImageIcon originalIcon = new ImageIcon(getClass().getResource("/icon.png"));
+            ImageIcon originalIcon = new ImageIcon("././icon.png");
             int newWidth = 150;
             int newHeight = (int) (originalIcon.getIconHeight() *
                     ((double) newWidth / originalIcon.getIconWidth()));
