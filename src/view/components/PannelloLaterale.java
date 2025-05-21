@@ -2,6 +2,8 @@ package src.view.components;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 public class PannelloLaterale extends JPanel {
@@ -30,7 +32,12 @@ public class PannelloLaterale extends JPanel {
         JScrollPane scroller = new JScrollPane(categoryList);
         scroller.setBorder(BorderFactory.createEmptyBorder());
         add(scroller, BorderLayout.CENTER);
-
+        categoryList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //TODO
+            }
+        });
         // Logo in fondo
         caricaLogo();
     }
