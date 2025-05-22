@@ -3,9 +3,11 @@ package src.view.components;
 import src.models.Prodotto;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PannelloCategoria extends JPanel {
+public class PannelloCategoria extends JPanel implements ActionListener {
     public PannelloCategoria(String titoloCategoria, ArrayList<Prodotto> prodotti) {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 240, 240));
@@ -70,6 +72,7 @@ public class PannelloCategoria extends JPanel {
         // Info prodotto
         JLabel nomeLabel = new JLabel("<html><div style='width:160px'>" + prodotto.getNome() + "</div></html>");
         JLabel marcaLabel = new JLabel("Marca: " + prodotto.getMarca());
+        JButton aggiungiAlCarrello = creaBottone("Aggiungi al carrello","Aggiungi " + prodotto.getNome() + " al carrello");
         JLabel prezzoLabel = new JLabel("€ " + String.format("%.2f", prodotto.getPrezzo()), SwingConstants.RIGHT);
         prezzoLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setForeground(new Color(0, 100, 0));
@@ -77,13 +80,35 @@ public class PannelloCategoria extends JPanel {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.add(nomeLabel);
-        infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        infoPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         infoPanel.add(marcaLabel);
+        infoPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         infoPanel.add(prezzoLabel);
+        infoPanel.add(aggiungiAlCarrello);
 
         card.add(imgLabel, BorderLayout.NORTH);
         card.add(infoPanel, BorderLayout.CENTER);
 
         return card;
+    }
+
+    private JButton creaBottone(String text, String tooltip) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(100, 30));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(100, 100, 100));
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        button.setFocusable(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.addActionListener(this);
+        button.setToolTipText(tooltip);
+        button.setActionCommand(text);
+        return button;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

@@ -1,6 +1,6 @@
 package src.view;
 
-import src.models.AccessoriPC;
+import src.models.categories.AccessoriPC;
 import src.models.Prodotto;
 import src.view.auth.InterfacciaAuth;
 import src.view.components.PannelloCategoria;
@@ -24,7 +24,7 @@ public class HomePage extends JFrame implements ActionListener {
     public HomePage() {
         super("Nucifora's Hub");
         setLayout(new BorderLayout());
-
+        setIconImage(new ImageIcon("./icon.png").getImage());
         PannelloLaterale pannelloLaterale = new PannelloLaterale();
         add(pannelloLaterale, BorderLayout.WEST);
 
@@ -36,19 +36,22 @@ public class HomePage extends JFrame implements ActionListener {
             ArrayList<Prodotto> prodotti = creaProdottiEsempio(categoria);
             PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti);
 
-            // Imposta dimensioni massime
+            // Rimuovi la dimensione massima o usa preferita
             categoriaPanel.setMaximumSize(new Dimension(
-                    Toolkit.getDefaultToolkit().getScreenSize().width - 250,
-                    250
+                    Integer.MAX_VALUE, // Larghezza massima possibile
+                    250 // Altezza fissa
             ));
 
             mainPanel.add(categoriaPanel);
-            mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+            mainPanel.add(Box.createVerticalStrut(20)); // Spazio più intelligente
         }
+
+        mainPanel.add(Box.createVerticalGlue());
 
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, BorderLayout.CENTER);
 
@@ -59,25 +62,6 @@ public class HomePage extends JFrame implements ActionListener {
         setJMenuBar(creaBarraMenu());
         setVisible(true);
     }
-
-    private ArrayList<Prodotto> creaProdottiEsempio(String categoria) {
-        ArrayList<Prodotto> prodotti = new ArrayList<>();
-        String[] marche = {"Samsung", "Logitech", "Razer", "Apple", "Sony", "HP", "Dell", "Lenovo"};
-
-        // Limita a 10 prodotti per categoria
-        for (int i = 1; i <= 10; i++) {
-            prodotti.add(new AccessoriPC(
-                    "Prodotto " + i + " " + categoria,
-                    String.valueOf(i),
-                    marche[i % marche.length],
-                    categoria,
-                    null,
-                    104.99
-            ));
-        }
-        return prodotti;
-    }
-
 
     private JMenuBar creaBarraMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -100,6 +84,26 @@ public class HomePage extends JFrame implements ActionListener {
         menuBar.add(rightPanel, BorderLayout.EAST);
 
         return menuBar;
+    }
+
+    private ArrayList<Prodotto> creaProdottiEsempio(String categoria) {
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        String[] marche = {"Samsung", "Logitech", "Razer", "Apple", "Sony", "HP", "Dell", "Lenovo"};
+
+        // Limita a 10 prodotti per categoria
+        for (int i = 1; i <= 4; i++) {
+            prodotti.add(new AccessoriPC(
+                    "Prodotto " + i + " " + categoria,
+                    String.valueOf(i),
+                    marche[i % marche.length],
+                    categoria,
+                    null,
+                    104.99,
+                    "Bossetti",
+                    "Diocane porcodio"
+            ));
+        }
+        return prodotti;
     }
 
     private JPanel creaPannelloMenu(int alignment, JButton... buttons) {
