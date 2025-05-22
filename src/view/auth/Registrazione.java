@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Registrazione extends JPanel {
-    private JTextField emailField = new JTextField(20);
-    private JTextField usernameField = new JTextField(20);
-    private JPasswordField passwordField = new JPasswordField(20);
-    private JPasswordField confirmPasswordField = new JPasswordField(20);
-    private JCheckBox termsCheckbox = new JCheckBox("Accetto i termini di utilizzo");
+    private final JTextField emailField = new JTextField(20);
+    private final JTextField usernameField = new JTextField(20);
+    private final JPasswordField passwordField = new JPasswordField(20);
+    private final JPasswordField confirmPasswordField = new JPasswordField(20);
+    private final JCheckBox termsCheckbox = new JCheckBox("Accetto i termini di utilizzo");
+    private final JCheckBox adminCheckbox = new JCheckBox("Amministratore");
+    private final JPasswordField adminPasswordField = new JPasswordField(15);
 
     public Registrazione() {
         setLayout(new GridBagLayout());
@@ -26,6 +28,24 @@ public class Registrazione extends JPanel {
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
         add(termsCheckbox, gbc);
+
+        // Pannello amministratore
+        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        JPanel adminPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        adminPanel.add(adminCheckbox);
+        adminPanel.add(new JLabel("Parola di sicurezza:"));
+        adminPanel.add(adminPasswordField);
+        adminPasswordField.setEnabled(false); // Disabilitato inizialmente
+        add(adminPanel, gbc);
+
+        // Listener per abilitare/disabilitare il campo password amministratore
+        adminCheckbox.addActionListener(e -> {
+            adminPasswordField.setEnabled(adminCheckbox.isSelected());
+            if (!adminCheckbox.isSelected()) {
+                adminPasswordField.setText("");
+            }
+        });
     }
 
     private void addField(GridBagConstraints gbc, int row, String labelText, JComponent field) {
@@ -61,6 +81,14 @@ public class Registrazione extends JPanel {
             JOptionPane.showMessageDialog(this, "Devi accettare i termini di utilizzo", "Errore", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        if (adminCheckbox.isSelected()) {
+            String adminPassword = new String(adminPasswordField.getPassword());
+            String ADMIN_SECRET_WORD = "pelato<3";
+            if (!adminPassword.equals(ADMIN_SECRET_WORD)) {
+                JOptionPane.showMessageDialog(this, "Parola di sicurezza amministratore errata", "Errore", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
         return true;
     }
 
@@ -74,5 +102,9 @@ public class Registrazione extends JPanel {
 
     public char[] getPassword() {
         return passwordField.getPassword();
+    }
+
+    public boolean isAdmin() {
+        return adminCheckbox.isSelected();
     }
 }

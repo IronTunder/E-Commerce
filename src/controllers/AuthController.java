@@ -1,59 +1,89 @@
 package src.controllers;
 
 import src.models.Utente;
+import src.view.HomePage;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class AuthController {
+public class AuthController {
     private Utente login = null;
+    HomePage homePage;
+    private static final String USERS_FILE = "files/users.dat";
 
-
-    public void registraUtente(Utente utente){
-        try{
-            FileInputStream fileInputStream = new FileInputStream("users.dat");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            ArrayList<Utente> users = new ArrayList<>();
-            while(true){
-                try {
-                    users.add((Utente) objectInputStream.readObject());
-                } catch (IOException e) {
-                    break;
-                }
-            }
-            fileInputStream.close();
-            objectInputStream.close();
-            FileOutputStream fileOutputStream = new FileOutputStream("users.dat");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            users.add(utente);
-            for (Utente user : users) {
-                objectOutputStream.writeObject(user);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public AuthController(HomePage homePage) {
+        this.homePage = homePage;
+        new File("files").mkdirs();
     }
 
-    public void accedi(String nomeUtente,char[] password){
-        try {
-            FileInputStream fileInputStream = new FileInputStream("users.dat");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            while(true){
-                try {
-                    if((((Utente) objectInputStream.readObject()).getUsername().equals(nomeUtente) || ((Utente) objectInputStream.readObject()).getEmail().equals(nomeUtente)) && Arrays.equals(((Utente) objectInputStream.readObject()).getPassword(), password)){
-                        login = (Utente) objectInputStream.readObject();
+    public void registraUtente(Utente utente) {
+        ArrayList<Utente> users = caricaUtenti();
+        for (Utente user : users) {
+            if (user.equals(utente)) {
+                throw new RuntimeException("Utente già esistente");
+            }
+        }
+        users.add(utente);
+        salvaUtenti(users);
+
+        accedi(utente.getUsername(), utente.getPassword());
+    }
+
+    public boolean accedi(String nomeUtente, char[] password) {
+        ArrayList<Utente> users = caricaUtenti();
+
+        for (Utente user : users) {
+            if ((user.getUsername().equals(nomeUtente) || user.getEmail().equals(nomeUtente))
+                    && Arrays.equals(user.getPassword(), password)) {
+                login = user;
+                homePage.rimuoviAuth();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ArrayList<Utente> caricaUtenti() {
+        ArrayList<Utente> users = new ArrayList<>();
+        File file = new File(USERS_FILE);
+
+        if (file.exists() && file.length() > 0) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                while (true) {
+                    try {
+                        users.add((Utente) ois.readObject());
+                    } catch (EOFException e) {
+                        break;
                     }
-                } catch (IOException e) {
-                    break;
                 }
+            } catch (Exception e) {
+                throw new RuntimeException("Errore durante la lettura degli utenti", e);
+            }
+        }
+        return users;
+    }
+
+    private void salvaUtenti(ArrayList<Utente> users) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_FILE))) {
+            for (Utente user : users) {
+                oos.writeObject(user);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Errore durante il salvataggio degli utenti", e);
         }
     }
 
-    public boolean isLoggedIn(){
+    public void logout() {
+        login = null;
+        homePage.getJMenuBar().add(homePage.aggiungiAuth());
+    }
+
+    public boolean isLoggedIn() {
         return login != null;
+    }
+
+    public Utente getLogin() {
+        return login;
     }
 }

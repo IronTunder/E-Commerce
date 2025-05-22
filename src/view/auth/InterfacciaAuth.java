@@ -1,19 +1,24 @@
 package src.view.auth;
 
+import src.controllers.AuthController;
+import src.models.Utente;
+
 import javax.swing.*;
 import java.awt.*;
 
 
 public class InterfacciaAuth extends JFrame {
-    private JPanel cardPanel = new JPanel(new CardLayout());
-    private Registrazione registrazione = new Registrazione();
-    private Login loginPanel = new Login();
-    private JPanel buttonPanel = new JPanel();
-    private JButton primaryButton = new JButton();
-    private JButton switchButton = new JButton();
 
-    public InterfacciaAuth() {
+    private final JPanel cardPanel = new JPanel(new CardLayout());
+    private final Registrazione registrazione = new Registrazione();
+    private final Login loginPanel = new Login();
+    private final JButton primaryButton = new JButton();
+    private final JButton switchButton = new JButton();
+    private final AuthController authController;
+
+    public InterfacciaAuth(AuthController authController) {
         super("Registrazione/Login");
+        this.authController = authController;
         setSize(500, 400);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -28,6 +33,7 @@ public class InterfacciaAuth extends JFrame {
         confSwitch();
 
         // Pannello dei bottoni
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
@@ -68,11 +74,26 @@ public class InterfacciaAuth extends JFrame {
     private void azionePrincipale() {
         if (isRegistrationPanelVisible()) {
             if (registrazione.validaRegistrazione()) {
-                JOptionPane.showMessageDialog(this, "Registrazione completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    authController.registraUtente(new Utente(registrazione.getEmail(),registrazione.getPassword(),registrazione.getUsername(),registrazione.isAdmin()));
+                    JOptionPane.showMessageDialog(this, "Registrazione completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Errore durante la registrazione (L'utente è gia registrato?)", "Errore", JOptionPane.ERROR_MESSAGE);
+                    throw new RuntimeException(e);
+                }
             }
         } else {
             if (loginPanel.validaLogin()) {
-                JOptionPane.showMessageDialog(this, "Accesso effettuato con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    if(authController.accedi(loginPanel.getUsername(),loginPanel.getPassword())){
+                        JOptionPane.showMessageDialog(this, "Accesso completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Errore durante l'accesso (Controlla le credenziali o registrati!)", "Errore", JOptionPane.ERROR_MESSAGE);
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -91,6 +112,7 @@ public class InterfacciaAuth extends JFrame {
     public void mostraPannelloLogin() {
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.show(cardPanel, "Login");
+        aggiornaStatoBottoni();
     }
 
     private void aggiornaStatoBottoni() {

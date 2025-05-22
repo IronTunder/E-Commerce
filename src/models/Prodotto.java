@@ -10,7 +10,7 @@ public abstract class Prodotto implements Serializable {
     private final String marca;
     private final String categoria;
     private final ImageIcon icon;
-    private double prezzo;
+    private final double prezzo;
 
     public Prodotto(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo) {
         this.nome = nome;

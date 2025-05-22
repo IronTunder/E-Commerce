@@ -1,16 +1,21 @@
 package src.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Utente implements Serializable {
-    private String email;
-    private char[] password;
-    private String username;
+    private final String email;
+    private final char[] password;
+    private final String username;
+    private final boolean isAdmininstrator;
+    ArrayList<Prodotto> carrello = new ArrayList<>();
 
-    public Utente(String email, char[] password, String username) {
+    public Utente(String email, char[] password, String username, boolean isAdmininstrator) {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.isAdmininstrator = isAdmininstrator;
     }
 
     public String getEmail() {
@@ -25,15 +30,19 @@ public class Utente implements Serializable {
         return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public boolean isAdmininstrator() {
+        return isAdmininstrator;
     }
 
-    public void setPassword(char[] password) {
-        this.password = password;
+    public ArrayList<Prodotto> getCarrello() {
+        return carrello;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof Utente)) return false;
+
+        Utente utente = (Utente) o;
+        return Objects.equals(email, utente.email) && Objects.equals(username, utente.username);
     }
 }

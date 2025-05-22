@@ -1,6 +1,7 @@
 package src.view.components;
 
 import src.models.Prodotto;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -5,8 +5,8 @@ import java.awt.*;
 
 
 public class Login extends JPanel {
-    private JTextField usernameField = new JTextField(20);
-    private JPasswordField passwordField = new JPasswordField(20);
+    private final JTextField usernameField = new JTextField(20);
+    private final JPasswordField passwordField = new JPasswordField(20);
 
     public Login() {
         setLayout(new GridBagLayout());
