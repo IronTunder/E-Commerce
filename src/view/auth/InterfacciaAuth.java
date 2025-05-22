@@ -76,7 +76,7 @@ public class InterfacciaAuth extends JFrame {
             if (registrazione.validaRegistrazione()) {
                 try {
                     authController.registraUtente(new Utente(registrazione.getEmail(),registrazione.getPassword(),registrazione.getUsername(),registrazione.isAdmin()));
-                    JOptionPane.showMessageDialog(this, "Registrazione completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Registrazione completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, "Errore durante la registrazione (L'utente è gia registrato?)", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -87,8 +87,17 @@ public class InterfacciaAuth extends JFrame {
             if (loginPanel.validaLogin()) {
                 try {
                     if(authController.accedi(loginPanel.getUsername(),loginPanel.getPassword())){
-                        JOptionPane.showMessageDialog(this, "Accesso completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                        this.dispose();
+                        if (authController.isLoggedIn() && authController.getLogin().isAdmininstrator()) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Accesso come amministratore effettuato con successo!",
+                                    "Benvenuto Admin",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(this, "Accesso completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                        }
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, "Errore durante l'accesso (Controlla le credenziali o registrati!)", "Errore", JOptionPane.ERROR_MESSAGE);

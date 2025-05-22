@@ -38,6 +38,7 @@ public class AuthController {
                     && Arrays.equals(user.getPassword(), password)) {
                 login = user;
                 homePage.rimuoviAuth();
+                homePage.onLoginSuccess();
                 return true;
             }
         }
@@ -63,6 +64,7 @@ public class AuthController {
         }
         return users;
     }
+
 
     private void salvaUtenti(ArrayList<Utente> users) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_FILE))) {

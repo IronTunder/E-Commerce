@@ -6,6 +6,7 @@ import src.utils.FileManager;
 import src.view.auth.InterfacciaAuth;
 import src.view.components.PannelloCategoria;
 import src.view.components.PannelloLaterale;
+import src.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,9 +118,13 @@ public class HomePage extends JFrame implements ActionListener {
 
     public void updateAuthUI() {
         JMenuBar menuBar = this.getJMenuBar();
+        if (menuBar == null) {
+            menuBar = new JMenuBar();
+            setJMenuBar(menuBar);
+        }
+
         menuBar.removeAll();
 
-        // Pannello sinistro (account/auth)
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(new Color(50, 50, 50));
 
@@ -131,16 +136,20 @@ public class HomePage extends JFrame implements ActionListener {
             }
             leftPanel.add(accountButton);
 
-            // Aggiungi bottone admin se l'utente è amministratore
+            // Bottone admin più visibile
             if (authController.getLogin().isAdmininstrator()) {
-                JButton adminButton = creaBottone("Modifica ECommerce", "Pannello di amministrazione");
+                JButton adminButton = creaBottone("ADMIN PANEL", "Pannello di amministrazione");
                 adminButton.setActionCommand("AdminPanel");
+                adminButton.setBackground(new Color(200, 0, 0)); // Rosso per maggiore visibilità
+                adminButton.setForeground(Color.WHITE);
                 adminButton.addActionListener(this);
                 leftPanel.add(adminButton);
             }
         } else {
-            leftPanel.add(creaBottone("Accedi", "Clicca per accedere"));
-            leftPanel.add(creaBottone("Registrati", "Clicca per registrarti"));
+            JButton accedi = creaBottone("Accedi", "Clicca per accedere");
+            JButton registrati = creaBottone("Registrati", "Clicca per registrarti");
+            leftPanel.add(accedi);
+            leftPanel.add(registrati);
         }
         menuBar.add(leftPanel, BorderLayout.WEST);
 
@@ -182,6 +191,10 @@ public class HomePage extends JFrame implements ActionListener {
         return button;
     }
 
+    public void onLoginSuccess() {
+        updateAuthUI();
+    }
+
     private JButton creaBottone(ImageIcon imageIcon, String tooltip, String actionCommand) {
         JButton button = new JButton(imageIcon);
         button.setPreferredSize(new Dimension(100, 30));
@@ -195,6 +208,59 @@ public class HomePage extends JFrame implements ActionListener {
         button.setToolTipText(tooltip);
         button.setActionCommand(actionCommand);
         return button;
+    }
+
+    private void mostraPannelloAdmin() {
+        // Controlla se il frame admin è già aperto
+        for (Window window : Window.getWindows()) {
+            if (window instanceof JFrame && "Pannello Amministratore".equals(((JFrame) window).getTitle())) {
+                window.toFront();
+                return;
+            }
+        }
+
+        JFrame adminFrame = new JFrame("Pannello Amministratore");
+        adminFrame.setResizable(false);
+        adminFrame.setIconImage(new ImageIcon("./icon.png").getImage());
+        adminFrame.setLayout(new BorderLayout());
+        adminFrame.setSize(900, 650);
+        adminFrame.setLocationRelativeTo(this);
+
+        // Pannello principale con bordo
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(new Color(240, 240, 240));
+
+        FileManager fileManager = new FileManager();
+        fileManager.caricaProdotti();
+
+        Inserimento inserimento = new Inserimento();
+        ElencoMagazzino elencoMagazzino = new ElencoMagazzino(inserimento);
+        BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino);
+
+        // Stilizzazione componenti
+        inserimento.setBackground(new Color(240, 240, 240));
+        elencoMagazzino.setBackground(new Color(240, 240, 240));
+        bottoniInserimento.setBackground(new Color(240, 240, 240));
+
+        // Area di testo con scroll
+        JScrollPane scrollPane = new JScrollPane(elencoMagazzino.getTextArea());
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Elenco Prodotti"));
+        elencoMagazzino.remove(elencoMagazzino.getTextArea());
+        elencoMagazzino.add(scrollPane);
+
+        // Aggiunta dei componenti al pannello principale
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.add(new JLabel("Inserimento Prodotti", JLabel.CENTER), BorderLayout.NORTH);
+        northPanel.add(inserimento, BorderLayout.CENTER);
+        northPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        mainPanel.add(northPanel, BorderLayout.NORTH);
+        mainPanel.add(elencoMagazzino, BorderLayout.CENTER);
+        mainPanel.add(bottoniInserimento, BorderLayout.SOUTH);
+
+        adminFrame.add(mainPanel);
+        adminFrame.setVisible(true);
     }
 
     @Override
@@ -215,7 +281,7 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 break;
             case "Carrello":
-                if(authController.isLoggedIn()){
+                if (authController.isLoggedIn()) {
                     //TODO: Implementa logica per carrello
                 } else {
                     JOptionPane.showMessageDialog(this, "Accedere per utilizzare il carrello", "Attenzione", JOptionPane.WARNING_MESSAGE);
@@ -226,10 +292,8 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 break;
             case "AdminPanel":
-                JOptionPane.showMessageDialog(this, "Pannello di amministrazione", "Admin", JOptionPane.INFORMATION_MESSAGE);
-                // TODO: Implementa la logica per il pannello admin
+                mostraPannelloAdmin();
                 break;
         }
     }
-
 }
