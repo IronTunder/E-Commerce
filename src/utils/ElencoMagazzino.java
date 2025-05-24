@@ -8,9 +8,8 @@ import src.models.Prodotto;
 public class ElencoMagazzino extends JPanel {
     JTextArea textArea = new JTextArea();
     ArrayList<Prodotto> prodotti = new ArrayList<>();
-    Inserimento inserimento;
 
-    public ElencoMagazzino(Inserimento inserimento){
+    public ElencoMagazzino(){
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

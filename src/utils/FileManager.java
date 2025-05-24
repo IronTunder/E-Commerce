@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FileManager {
     private static final String PRODUCTS_FILE = "files/products.dat";
-    private final List<Prodotto> prodotti;
+    private List<Prodotto> prodotti;
 
     public FileManager() {
         this.prodotti = new ArrayList<>();
@@ -32,23 +32,37 @@ public class FileManager {
         File file = new File(PRODUCTS_FILE);
 
         if (!file.exists() || file.length() == 0) {
+            System.out.println("File non trovato o vuoto: " + file.getAbsolutePath());
             return;
         }
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(
-                new FileInputStream(file))) {
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             while (true) {
                 try {
-                    Prodotto prodotto = (Prodotto) objectInputStream.readObject();
-                    prodotti.add(prodotto);
+                    Object obj = ois.readObject();
+                    if (obj instanceof Prodotto) {
+                        prodotti.add((Prodotto) obj);
+                        System.out.println("Caricato prodotto: " + obj);
+                    }
                 } catch (EOFException e) {
                     break;
                 }
             }
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Formato file non valido", e);
+            System.err.println("Classe non trovata durante la deserializzazione: " + e.getMessage());
+            e.printStackTrace();
+        } catch (InvalidClassException e) {
+            System.err.println("Problema di versione della classe: " + e.getMessage());
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            System.err.println("Formato file corrotto: " + e.getMessage());
+            e.printStackTrace();
         } catch (IOException e) {
-            throw new RuntimeException("Errore durante la lettura dei prodotti", e);
+            System.err.println("Errore IO durante la lettura: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        System.out.println("Totale prodotti caricati: " + prodotti.size());
     }
 
     public boolean aggiungiProdotto(Prodotto prodotto) {
@@ -67,4 +81,14 @@ public class FileManager {
     public List<Prodotto> getProdotti() {
         return new ArrayList<>(prodotti);
     }
+
+//    public boolean rimuoviProdotto(String id) {
+//        for (Prodotto p : new ArrayList<>(prodotti)) {
+//            if (p.getId().equals(id)) {
+//                prodotti.remove(p);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

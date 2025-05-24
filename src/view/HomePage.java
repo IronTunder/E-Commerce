@@ -39,13 +39,14 @@ public class HomePage extends JFrame implements ActionListener {
         };
 
         FileManager fileManager = new FileManager();
-        fileManager.caricaProdotti();
+        fileManager.caricaProdotti(); // Carica i prodotti all'avvio
 
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
-            for (int i = 0; i < fileManager.getProdotti().size(); i++) {
-                if(fileManager.getProdotti().get(i).getCategoria().equals(categoria)){
-                    prodotti.add(fileManager.getProdotti().get(i));
+            for (Prodotto p : fileManager.getProdotti()) {
+                System.out.println(p.toString());
+                if(p.getCategoria().equals(categoria)) {
+                    prodotti.add(p);
                 }
             }
             PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti);
@@ -75,6 +76,66 @@ public class HomePage extends JFrame implements ActionListener {
         setJMenuBar(creaBarraMenu());
         updateAuthUI();
         setVisible(true);
+    }
+
+
+    public void aggiornaVisualizzazioneProdotti() {
+        // Implementa la logica per ricaricare e ridisegnare i prodotti
+        getContentPane().removeAll();
+        setLayout(new BorderLayout());
+        setIconImage(new ImageIcon("./icon.png").getImage());
+        PannelloLaterale pannelloLaterale = new PannelloLaterale();
+        add(pannelloLaterale, BorderLayout.WEST);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(new Color(240, 240, 240));
+
+        String[] categorie = {
+                "Accessori PC", "Accessori SmartPhone", "Audio, Video e Gaming",
+                "Casa e Ufficio", "Cavetteria", "Componenti PC",
+                "Computer Desktop", "Consumabili", "Notebook e Accessori",
+                "Usato Garantito"
+        };
+
+        FileManager fileManager = new FileManager();
+        fileManager.caricaProdotti(); // Carica i prodotti all'avvio
+
+        for (String categoria : categorie) {
+            ArrayList<Prodotto> prodotti = new ArrayList<>();
+            for (Prodotto p : fileManager.getProdotti()) {
+                if(p.getCategoria().equals(categoria)) {
+                    prodotti.add(p);
+                }
+            }
+            PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti);
+
+            categoriaPanel.setMaximumSize(new Dimension(
+                    Integer.MAX_VALUE,
+                    250
+            ));
+
+            mainPanel.add(categoriaPanel);
+            mainPanel.add(Box.createVerticalStrut(20));
+        }
+
+        mainPanel.add(Box.createVerticalGlue());
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        add(scrollPane, BorderLayout.CENTER);
+
+        setLocation(10, 10);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(1080, 720);
+        setUndecorated(true);
+        setJMenuBar(creaBarraMenu());
+        updateAuthUI();
+        revalidate();
+        repaint();
     }
 
     private JMenuBar creaBarraMenu() {
@@ -235,8 +296,8 @@ public class HomePage extends JFrame implements ActionListener {
         fileManager.caricaProdotti();
 
         Inserimento inserimento = new Inserimento();
-        ElencoMagazzino elencoMagazzino = new ElencoMagazzino(inserimento);
-        BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino);
+        ElencoMagazzino elencoMagazzino = new ElencoMagazzino();
+        BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino,this);
 
         // Stilizzazione componenti
         inserimento.setBackground(new Color(240, 240, 240));
