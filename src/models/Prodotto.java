@@ -11,14 +11,16 @@ public abstract class Prodotto implements Serializable {
     private final String categoria;
     private final ImageIcon icon;
     private final double prezzo;
+    private String descrizioneOggetto;
 
-    public Prodotto(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo) {
+    public Prodotto(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto) {
         this.nome = nome;
         this.id = id;
         this.marca = marca;
         this.categoria = categoria;
         this.icon = icon;
         this.prezzo = prezzo;
+        this.descrizioneOggetto = descrizioneOggetto;
     }
 
     public ImageIcon getIcon() {
@@ -44,4 +46,6 @@ public abstract class Prodotto implements Serializable {
     public double getPrezzo() {
         return prezzo;
     }
+
+    public String getDescrizioneOggetto() {return descrizioneOggetto;}
 }
