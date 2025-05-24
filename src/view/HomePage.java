@@ -223,7 +223,7 @@ public class HomePage extends JFrame implements ActionListener {
         adminFrame.setResizable(false);
         adminFrame.setIconImage(new ImageIcon("./icon.png").getImage());
         adminFrame.setLayout(new BorderLayout());
-        adminFrame.setSize(900, 650);
+        adminFrame.setSize(900, 720);
         adminFrame.setLocationRelativeTo(this);
 
         // Pannello principale con bordo

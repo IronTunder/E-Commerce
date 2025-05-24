@@ -5,13 +5,21 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class AccessoriSmartPhone extends Prodotto {
-    private String tipoMateriale;
-    private int capacitaPowerBank;
-    private boolean ricaricaWireless;
-    private boolean magnetico;
+    private final String tipoMateriale;
+    private final int capacitaPowerBank;
+    private final boolean ricaricaWireless;
+    private final boolean magnetico;
 
     public AccessoriSmartPhone(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoMateriale, int capacitaPowerBank, boolean ricaricaWireless, boolean magnetico) {
         super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+
+        if (tipoMateriale == null || tipoMateriale.trim().isEmpty()) {
+            throw new IllegalArgumentException("Il tipo di materiale non può essere vuoto");
+        }
+        if (capacitaPowerBank < 0) {
+            throw new IllegalArgumentException("La capacità della power bank non può essere negativa");
+        }
+
         this.tipoMateriale = tipoMateriale;
         this.capacitaPowerBank = capacitaPowerBank;
         this.ricaricaWireless = ricaricaWireless;
@@ -22,31 +30,15 @@ public class AccessoriSmartPhone extends Prodotto {
         return tipoMateriale;
     }
 
-    public void setTipoMateriale(String tipoMateriale) {
-        this.tipoMateriale = tipoMateriale;
-    }
-
     public int getCapacitaPowerBank() {
         return capacitaPowerBank;
-    }
-
-    public void setCapacitaPowerBank(int capacitaPowerBank) {
-        this.capacitaPowerBank = capacitaPowerBank;
     }
 
     public boolean isRicaricaWireless() {
         return ricaricaWireless;
     }
 
-    public void setRicaricaWireless(boolean ricaricaWireless) {
-        this.ricaricaWireless = ricaricaWireless;
-    }
-
     public boolean isMagnetico() {
         return magnetico;
-    }
-
-    public void setMagnetico(boolean magnetico) {
-        this.magnetico = magnetico;
     }
 }

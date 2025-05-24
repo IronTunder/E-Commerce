@@ -5,13 +5,27 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class ComponentiPC extends Prodotto {
-    private String tipoComponente;
-    private String specificaTecnica;
-    private int capacitaGB;
-    private String compatibilita;
+    private final String tipoComponente;
+    private final String specificaTecnica;
+    private final int capacitaGB;
+    private final String compatibilita;
 
     public ComponentiPC(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoComponente, String specificaTecnica, int capacitaGB, String compatibilita) {
         super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+
+        if (tipoComponente == null || tipoComponente.trim().isEmpty()) {
+            throw new IllegalArgumentException("Il tipo di componente non può essere vuoto");
+        }
+        if (specificaTecnica == null || specificaTecnica.trim().isEmpty()) {
+            throw new IllegalArgumentException("La specifica tecnica non può essere vuota");
+        }
+        if (capacitaGB <= 0) {
+            throw new IllegalArgumentException("La capacità deve essere maggiore di 0");
+        }
+        if (compatibilita == null || compatibilita.trim().isEmpty()) {
+            throw new IllegalArgumentException("La compatibilità non può essere vuota");
+        }
+
         this.tipoComponente = tipoComponente;
         this.specificaTecnica = specificaTecnica;
         this.capacitaGB = capacitaGB;
@@ -22,32 +36,17 @@ public class ComponentiPC extends Prodotto {
         return tipoComponente;
     }
 
-    public void setTipoComponente(String tipoComponente) {
-        this.tipoComponente = tipoComponente;
-    }
-
     public String getSpecificaTecnica() {
         return specificaTecnica;
-    }
-
-    public void setSpecificaTecnica(String specificaTecnica) {
-        this.specificaTecnica = specificaTecnica;
     }
 
     public int getCapacitaGB() {
         return capacitaGB;
     }
 
-    public void setCapacitaGB(int capacitaGB) {
-        this.capacitaGB = capacitaGB;
-    }
-
     public String getCompatibilita() {
         return compatibilita;
     }
 
-    public void setCompatibilita(String compatibilita) {
-        this.compatibilita = compatibilita;
-    }
 }
 
