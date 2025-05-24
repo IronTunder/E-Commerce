@@ -12,22 +12,22 @@ import java.util.Map;
 
 public class Inserimento extends JPanel {
     // Campi comuni a tutti i prodotti
-    private JTextField nome = new JTextField();
-    private JTextField id = new JTextField();
-    private JTextField marca = new JTextField();
-    private JTextField prezzo = new JTextField();
-    private JButton selezionaImmagine = new JButton("Seleziona Immagine");
+    private final JTextField nome = new JTextField();
+    private final JTextField id = new JTextField();
+    private final JTextField marca = new JTextField();
+    private final JTextField prezzo = new JTextField();
+    private final JButton selezionaImmagine = new JButton("Seleziona Immagine");
     private ImageIcon iconaSelezionata;
-    private JTextArea descrizione = new JTextArea();
+    private final JTextArea descrizione = new JTextArea();
 
     // ComboBox per la selezione della categoria
-    private JComboBox<String> categoriaComboBox = new JComboBox<>();
+    private final JComboBox<String> categoriaComboBox = new JComboBox<>();
 
     // Pannello per i campi specifici della categoria
-    private JPanel specificFieldsPanel = new JPanel();
+    private final JPanel specificFieldsPanel = new JPanel();
 
     // Mappa per memorizzare i campi specifici di ogni categoria
-    private Map<String, JComponent[]> specificFieldsMap = new HashMap<>();
+    private final Map<String, JComponent[]> specificFieldsMap = new HashMap<>();
 
     public Inserimento() {
         setLayout(new BorderLayout(10, 10));

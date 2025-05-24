@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FileManager {
     private static final String PRODUCTS_FILE = "files/products.dat";
-    private List<Prodotto> prodotti;
+    private final List<Prodotto> prodotti;
 
     public FileManager() {
         this.prodotti = new ArrayList<>();
