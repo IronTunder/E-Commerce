@@ -114,7 +114,7 @@ src/
 
 ## Credenziali per gli admin
 - Per registrare un nuovo admin è necessaria
-  una parola chiave che è [pelato<3]
+  una parola chiave che è "pelato<3"
 
 **Utente normale:**
 - Email: user@example.com
