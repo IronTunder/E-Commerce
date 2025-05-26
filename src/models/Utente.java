@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class Utente implements Serializable {
+    private static final long serialVersionUID = -3511587265146980805L;
     private final String email;
     private final char[] password;
     private final String username;
     private final boolean isAdmininstrator;
     List<Prodotto> carrello = new ArrayList<>();
-
 
     public Utente(String email, char[] password, String username, boolean isAdmininstrator) {
         this.email = email;

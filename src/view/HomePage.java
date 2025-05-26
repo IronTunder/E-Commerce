@@ -46,7 +46,7 @@ public class HomePage extends JFrame implements ActionListener {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
             for (Prodotto p : fileManager.getProdotti()) {
                 if(p.getCategoria().equals(categoria)) {
-                    System.out.println(p.toString());
+                    System.out.println(p);
                     prodotti.add(p);
                 }
             }

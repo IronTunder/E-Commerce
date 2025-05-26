@@ -3,6 +3,7 @@ package src.view.components;
 import src.controllers.AuthController;
 import src.models.Prodotto;
 
+import src.models.Utente;
 import src.models.categories.*;
 import src.view.HomePage;
 import src.view.auth.InterfacciaAuth;
@@ -14,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PannelloCategoria extends JPanel{
@@ -257,11 +259,20 @@ public class PannelloCategoria extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(authController.isLoggedIn()){
+                    ArrayList<Utente> utenti = authController.getUtenti();
                     authController.getLogin().getCarrello().add(prodotto);
+                    for (int i = 0; i < utenti.size(); i++) {
+                        if(authController.getLogin().equals(utenti.get(i))){
+                            utenti.remove(i);
+                            utenti.add(authController.getLogin());
+                            break;
+                        }
+                    }
+                    authController.salvaUtenti(utenti);
                 }
                 else{
                     JOptionPane.showMessageDialog(homePage, "Accedere per utilizzare il carrello", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                    if (homePage == null || !interfacciaAuth.isVisible()) {
+                    if (interfacciaAuth == null) {
                         interfacciaAuth = new InterfacciaAuth(authController);
                         interfacciaAuth.mostraPannelloLogin();
                     }

@@ -18,7 +18,7 @@ public class AuthController {
     }
 
     public void registraUtente(Utente utente) {
-        ArrayList<Utente> users = caricaUtenti();
+        ArrayList<Utente> users = getUtenti();
         for (Utente user : users) {
             if (user.equals(utente)) {
                 throw new RuntimeException("Utente già esistente");
@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     public boolean accedi(String nomeUtente, char[] password) {
-        ArrayList<Utente> users = caricaUtenti();
+        ArrayList<Utente> users = getUtenti();
 
         for (Utente user : users) {
             if ((user.getUsername().equals(nomeUtente) || user.getEmail().equals(nomeUtente))
@@ -45,7 +45,7 @@ public class AuthController {
         return false;
     }
 
-    private ArrayList<Utente> caricaUtenti() {
+    public ArrayList<Utente> getUtenti() {
         ArrayList<Utente> users = new ArrayList<>();
         File file = new File(USERS_FILE);
 
@@ -66,7 +66,7 @@ public class AuthController {
     }
 
 
-    private void salvaUtenti(ArrayList<Utente> users) {
+    public void salvaUtenti(ArrayList<Utente> users) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_FILE))) {
             for (Utente user : users) {
                 oos.writeObject(user);
@@ -75,6 +75,7 @@ public class AuthController {
             throw new RuntimeException("Errore durante il salvataggio degli utenti", e);
         }
     }
+
 
     public void logout() {
         login = null;

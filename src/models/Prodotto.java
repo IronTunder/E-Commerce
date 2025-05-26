@@ -1,10 +1,10 @@
 package src.models;
 
-import javax.swing.*;
 import java.io.Serializable;
 
 public abstract class Prodotto implements Serializable {
 
+    private static final long serialVersionUID = -6631538639364099969L;
     private final String nome;
     private final String id;
     private final String marca;
