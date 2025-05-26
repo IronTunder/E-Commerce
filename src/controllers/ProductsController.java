@@ -1,4 +1,4 @@
-package src.utils;
+package src.controllers;
 
 import src.models.Prodotto;
 
@@ -6,11 +6,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileManager {
+public class ProductsController {
     private static final String PRODUCTS_FILE = "files/products.dat";
     private final List<Prodotto> prodotti = new ArrayList<>();
 
-    public FileManager() {
+    public ProductsController() {
         new File("files").mkdirs();
     }
 

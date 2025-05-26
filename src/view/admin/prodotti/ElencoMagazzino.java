@@ -1,8 +1,7 @@
-package src.view.admin;
+package src.view.admin.prodotti;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import src.models.Prodotto;

@@ -1,4 +1,4 @@
-package src.view.admin;
+package src.view.admin.prodotti;
 
 import src.models.Prodotto;
 import src.models.categories.*;

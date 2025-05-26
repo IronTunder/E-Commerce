@@ -1,16 +1,16 @@
-package src.view.admin;
+package src.view.admin.prodotti;
 
-import src.utils.FileManager;
+import src.controllers.ProductsController;
 import src.view.HomePage;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AdminPanel extends JFrame {
+public class ProductsPanel extends JFrame {
 
-    public AdminPanel(HomePage homePage){
+    public ProductsPanel(HomePage homePage){
         super("Pannello Amministratore");
-        FileManager fileManager = homePage.getFileManager();
+        ProductsController productsController = homePage.getFileManager();
         setResizable(false);
         setIconImage(new ImageIcon("./icon.png").getImage());
         setLayout(new BorderLayout());
@@ -24,7 +24,7 @@ public class AdminPanel extends JFrame {
 
 
         Inserimento inserimento = new Inserimento();
-        ElencoMagazzino elencoMagazzino = new ElencoMagazzino(fileManager.getProdotti());
+        ElencoMagazzino elencoMagazzino = new ElencoMagazzino(productsController.getProdotti());
         BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino, homePage);
 
         // Stilizzazione componenti

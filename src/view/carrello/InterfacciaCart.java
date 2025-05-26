@@ -1,6 +1,8 @@
 package src.view.carrello;
 
 import src.controllers.AuthController;
+import src.controllers.OrdersController;
+import src.models.Ordine;
 import src.models.Prodotto;
 import src.models.Utente;
 import src.view.HomePage;
@@ -8,28 +10,34 @@ import src.view.HomePage;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
 
 public class InterfacciaCart extends JFrame {
 
     private final AuthController authController;
+    private final OrdersController ordersController;
     private JPanel mainPanel;
     private JLabel totalLabel;
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.ITALY);
     private boolean cartModified = false;
     private static final int IMG_WIDTH = 80;
     private static final int IMG_HEIGHT = 80;
+    private JComboBox<String> indirizzoSpedizioneComboBox;
+    private JScrollPane itemsScrollPane;
 
     public InterfacciaCart(HomePage homePage) {
         this.authController = homePage.getAuthController();
-
+        this.ordersController = homePage.getOrdersController();
         setTitle("Carrello - " + authController.getLogin().getUsername());
-        setSize(900, 650); // Aumentato le dimensioni per accomodare le immagini
+        setSize(900, 700); // Aumentato le dimensioni per il pannello di spedizione
         setLocationRelativeTo(homePage);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setIconImage(homePage.getIconImage());
@@ -54,6 +62,13 @@ public class InterfacciaCart extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
+        // Verifica e gestione indirizzo
+        if (!checkAndRequestAddress()) {
+            // Se non c'è indirizzo, mostra solo un messaggio e disabilita tutto
+            showNoAddressMessage();
+            return;
+        }
+
         // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
@@ -68,13 +83,13 @@ public class InterfacciaCart extends JFrame {
         itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
         itemsPanel.setBackground(new Color(248, 248, 248));
 
-        JScrollPane scrollPane = new JScrollPane(itemsPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBackground(new Color(248, 248, 248));
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        itemsScrollPane = new JScrollPane(itemsPanel);
+        itemsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        itemsScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        itemsScrollPane.getViewport().setBackground(new Color(248, 248, 248));
+        mainPanel.add(itemsScrollPane, BorderLayout.CENTER);
 
-        // Bottom panel with total and buttons
+        // Bottom panel with total, shipping and buttons
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(new Color(248, 248, 248));
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -82,11 +97,70 @@ public class InterfacciaCart extends JFrame {
                 BorderFactory.createEmptyBorder(15, 0, 0, 0)
         ));
 
+        // Shipping and total panel
+        JPanel shippingTotalPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        shippingTotalPanel.setBackground(new Color(248, 248, 248));
+
+        // Shipping address panel
+        JPanel shippingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        shippingPanel.setBackground(new Color(248, 248, 248));
+        JLabel shippingLabel = new JLabel("Indirizzo di spedizione:");
+        shippingLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Get user's addresses or use default
+        // Verifica che authController e getLogin() non siano null
+        if (authController != null && authController.getLogin() != null) {
+            // Inizializza la lista degli indirizzi, assicurandoti che non sia null
+            List<String> indirizzi = authController.getLogin().getIndirizzi();
+            if (indirizzi == null) {
+                indirizzi = new ArrayList<>(); // Inizializza se null
+            }
+
+            if (indirizzi.isEmpty()) {
+                JDialog indirizzoDialog = new JDialog();
+                indirizzoDialog.setLayout(new GridLayout(2, 1, 10, 10));
+                JButton submitButton = new JButton("Salva");
+                JTextField indirizzoText = new JTextField();
+                indirizzoDialog.setIconImage(new ImageIcon("./icon.png").getImage());
+                indirizzoDialog.setTitle("Inserisci l'indirizzo di spedizione");
+                indirizzoDialog.add(indirizzoText);
+                indirizzoDialog.add(submitButton);
+                indirizzoDialog.setLocationRelativeTo(this);
+                indirizzoDialog.setSize(300,200);
+                indirizzoDialog.setVisible(true);
+                submitButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (authController.getLogin().getIndirizzi() == null) {
+                            authController.getLogin().setIndirizzi(new ArrayList<>());
+                        }
+                        authController.getLogin().getIndirizzi().add(indirizzoText.getText());
+                        updateUserProfile();
+                        indirizzoDialog.dispose();
+                    }
+                });
+            }
+
+            // Crea il JComboBox con l'array degli indirizzi
+            indirizzoSpedizioneComboBox = new JComboBox<>(indirizzi.toArray(new String[0]));
+            indirizzoSpedizioneComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
+            indirizzoSpedizioneComboBox.setPreferredSize(new Dimension(300, 25));
+        } else {
+            // Gestisci il caso in cui authController o getLogin() siano null
+            indirizzoSpedizioneComboBox = new JComboBox<>();
+            System.err.println("Errore: authController o login non disponibili");
+        }
+        shippingPanel.add(shippingLabel);
+        shippingPanel.add(indirizzoSpedizioneComboBox);
+        shippingTotalPanel.add(shippingPanel);
+
         // Total label
         totalLabel = new JLabel("Totale: ", JLabel.RIGHT);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalLabel.setForeground(new Color(70, 70, 70));
-        bottomPanel.add(totalLabel, BorderLayout.NORTH);
+        shippingTotalPanel.add(totalLabel);
+
+        bottomPanel.add(shippingTotalPanel, BorderLayout.NORTH);
 
         // Buttons panel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
@@ -116,6 +190,149 @@ public class InterfacciaCart extends JFrame {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
+    }
+
+    private boolean checkAndRequestAddress() {
+        if (authController == null || authController.getLogin() == null) {
+            return false;
+        }
+
+        List<String> indirizzi = authController.getLogin().getIndirizzi();
+        if (indirizzi == null || indirizzi.isEmpty()) {
+            return showAddressInputDialog();
+        }
+        return true;
+    }
+
+    private boolean showAddressInputDialog() {
+        JDialog addressDialog = createAddressDialog();
+        final boolean[] addressProvided = {false};
+
+        // Blocca la finestra principale
+        this.setEnabled(false);
+
+        // Mostra il dialog e aspetta che venga chiuso
+        addressDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                InterfacciaCart.this.setEnabled(true);
+                if (!addressProvided[0]) {
+                    // Se l'utente chiude senza inserire l'indirizzo
+                    showNoAddressMessage();
+                } else {
+                    // Ricarica l'UI con l'indirizzo ora disponibile
+                    mainPanel.removeAll();
+                    initUI();
+                    revalidate();
+                    repaint();
+                }
+            }
+        });
+
+        addressDialog.setVisible(true);
+        return addressProvided[0];
+    }
+
+    private JDialog createAddressDialog() {
+        JDialog dialog = new JDialog(this, "Indirizzo di spedizione richiesto", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setSize(400, 250);
+        dialog.setLocationRelativeTo(this);
+        dialog.setResizable(false);
+
+        // Icona
+        if (getIconImage() != null) {
+            dialog.setIconImage(getIconImage());
+        }
+
+        // Pannello principale
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        mainPanel.setBackground(new Color(248, 248, 248));
+
+        // Messaggio
+        JLabel messageLabel = new JLabel(
+                "<html><div style='text-align: center;'>"
+                        + "Per procedere con l'acquisto, è necessario inserire un indirizzo di spedizione.<br><br>"
+                        + "Inserisci il tuo indirizzo completo nel campo sottostante:"
+                        + "</div></html>");
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        mainPanel.add(messageLabel, BorderLayout.NORTH);
+
+        // Campo indirizzo
+        JPanel addressPanel = new JPanel(new BorderLayout());
+        addressPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
+        JLabel addressLabel = new JLabel("Indirizzo completo:");
+        addressLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        JTextField addressField = new JTextField();
+        addressField.setFont(new Font("Arial", Font.PLAIN, 14));
+        addressField.setPreferredSize(new Dimension(300, 30));
+
+        addressPanel.add(addressLabel, BorderLayout.NORTH);
+        addressPanel.add(addressField, BorderLayout.CENTER);
+        mainPanel.add(addressPanel, BorderLayout.CENTER);
+
+        // Pulsanti
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
+        buttonPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
+
+        JButton saveButton = new JButton("Salva indirizzo");
+        saveButton.setFont(new Font("Arial", Font.BOLD, 14));
+        saveButton.setBackground(new Color(76, 175, 80));
+        saveButton.setForeground(Color.WHITE);
+        saveButton.setPreferredSize(new Dimension(180, 35));
+
+        saveButton.addActionListener(e -> {
+            String address = addressField.getText().trim();
+            if (!address.isEmpty()) {
+                // Aggiungi l'indirizzo
+                if (authController.getLogin().getIndirizzi() == null) {
+                    authController.getLogin().setIndirizzi(new ArrayList<>());
+                }
+                authController.getLogin().getIndirizzi().add(address);
+                updateUserProfile();
+
+                // Imposta che l'indirizzo è stato fornito
+                SwingUtilities.invokeLater(() -> {
+                    dialog.dispose();
+                });
+            } else {
+                JOptionPane.showMessageDialog(dialog,
+                        "Inserisci un indirizzo valido",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        buttonPanel.add(saveButton);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        dialog.add(mainPanel);
+        return dialog;
+    }
+
+    private void showNoAddressMessage() {
+        mainPanel.removeAll();
+
+        JPanel messagePanel = new JPanel(new BorderLayout());
+        messagePanel.setBorder(new EmptyBorder(50, 50, 50, 50));
+        messagePanel.setBackground(new Color(248, 248, 248));
+
+        JLabel messageLabel = new JLabel(
+                "<html><div style='text-align: center;'>"
+                        + "<h2>Nessun indirizzo di spedizione disponibile</h2>"
+                        + "<p>Per utilizzare il carrello, devi prima inserire un indirizzo di spedizione.</p>"
+                        + "<p>Chiudi questa finestra e riprova dopo aver inserito l'indirizzo.</p>"
+                        + "</div></html>",
+                SwingConstants.CENTER);
+
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        messagePanel.add(messageLabel, BorderLayout.CENTER);
+
+        mainPanel.add(messagePanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     private void updateUserProfile() {
@@ -240,7 +457,7 @@ public class InterfacciaCart extends JFrame {
 
         JButton increaseButton = new JButton("+");
         increaseButton.setFont(new Font("Arial", Font.BOLD, 12));
-        increaseButton.setPreferredSize(new Dimension(45, 25));
+        increaseButton.setPreferredSize(new Dimension(40, 25));
         increaseButton.addActionListener(e -> {
             updateQuantity(prodotto, 1);
             cartModified = true;
@@ -320,26 +537,60 @@ public class InterfacciaCart extends JFrame {
             return;
         }
 
+        // Verifica che sia selezionato un indirizzo valido
+        if (indirizzoSpedizioneComboBox.getSelectedItem() == null ||
+                indirizzoSpedizioneComboBox.getSelectedItem().equals("Nessun indirizzo disponibile")) {
+            JOptionPane.showMessageDialog(this,
+                    "Seleziona un indirizzo di spedizione valido",
+                    "Indirizzo mancante",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String indirizzoSpedizione = indirizzoSpedizioneComboBox.getSelectedItem().toString();
+        double total = currentUser.getCarrello().stream()
+                .mapToDouble(Prodotto::getPrezzo)
+                .sum();
+
         int option = JOptionPane.showConfirmDialog(this,
-                "Confermi l'acquisto di " + currentUser.getCarrello().size() + " articoli per " +
-                        currencyFormat.format(currentUser.getCarrello().stream().mapToDouble(Prodotto::getPrezzo).sum()) + "?",
+                "<html><div style='text-align: center;'>" +
+                        "Confermi l'acquisto di " + currentUser.getCarrello().size() + " articoli per " +
+                        currencyFormat.format(total) + "?<br><br>" +
+                        "<b>Spedizione a:</b> " + indirizzoSpedizione +
+                        "</div></html>",
                 "Conferma acquisto",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
 
         if (option == JOptionPane.YES_OPTION) {
-            double total = currentUser.getCarrello().stream()
-                    .mapToDouble(Prodotto::getPrezzo)
-                    .sum();
+            // Crea una copia del carrello per l'ordine
+            List<Prodotto> prodottiOrdinati = new ArrayList<>(currentUser.getCarrello());
 
+            // Crea il nuovo ordine
+            Ordine nuovoOrdine = new Ordine(
+                    currentUser,
+                    ordersController.getOrdini().size() + 1,
+                    prodottiOrdinati,
+                    LocalDateTime.now(),
+                    indirizzoSpedizione,
+                    total,
+                    "Da spedire"
+            );
+
+            // Aggiungi l'ordine al controller
+            ordersController.aggiungiOrdine(nuovoOrdine);
+            ordersController.salvaOrdini();
+            // Svuota il carrello
             currentUser.setCarrello(new ArrayList<>());
             cartModified = true;
             updateUserProfile();
 
             JOptionPane.showMessageDialog(this,
                     "<html><div style='text-align: center;'>" +
-                            "<b>Acquisto completato con successo!</b><br>" +
-                            "Totale: " + currencyFormat.format(total) +
+                            "<b>Acquisto completato con successo!</b><br><br>" +
+                            "Totale: " + currencyFormat.format(total) + "<br>" +
+                            "Spedizione a: " + indirizzoSpedizione + "<br><br>" +
+                            "Grazie per il tuo acquisto!" +
                             "</div></html>",
                     "Acquisto completato",
                     JOptionPane.INFORMATION_MESSAGE);

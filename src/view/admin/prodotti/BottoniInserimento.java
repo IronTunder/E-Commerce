@@ -1,4 +1,4 @@
-package src.view.admin;
+package src.view.admin.prodotti;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import src.models.Prodotto;
-import src.utils.FileManager;
+import src.controllers.ProductsController;
 import src.view.HomePage;
 
 public class BottoniInserimento extends JPanel implements ActionListener {
@@ -17,13 +17,13 @@ public class BottoniInserimento extends JPanel implements ActionListener {
     JButton rimuovi = new JButton("Rimuovi Prodotto");
     Inserimento inserimento;
     ElencoMagazzino elencoMagazzino;
-    FileManager fileManager;
+    ProductsController productsController;
     HomePage homePage;
 
     public BottoniInserimento(Inserimento inserimento, ElencoMagazzino elencoMagazzino, HomePage homePage){
         this.inserimento = inserimento;
         this.elencoMagazzino = elencoMagazzino;
-        this.fileManager = homePage.getFileManager();
+        this.productsController = homePage.getFileManager();
         this.homePage = homePage;
         setLayout(new FlowLayout());
         styleButton(aggiungi, new Color(46, 125, 50)); // Verde
@@ -56,7 +56,7 @@ public class BottoniInserimento extends JPanel implements ActionListener {
         if(bottone.getText().equals("Aggiungi Prodotto")){
             Prodotto prodotto = inserimento.getProdotto();
             if(prodotto != null) {
-                if(fileManager.aggiungiProdotto(prodotto)) {
+                if(productsController.aggiungiProdotto(prodotto)) {
                     aggiornaInterfaccia();
                     inserimento.resetFields();
                 } else {
@@ -66,14 +66,14 @@ public class BottoniInserimento extends JPanel implements ActionListener {
         }
         else if (bottone.getText().equals("Salva")) {
             try {
-                fileManager.salvaProdotti();
+                productsController.salvaProdotti();
                 JOptionPane.showMessageDialog(null, "Prodotti salvati con successo!");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Errore durante il salvataggio: " + ex.getMessage());
             }
         }
         else if (bottone.getText().equals("Carica")) {
-            fileManager.caricaProdotti();
+            productsController.caricaProdotti();
             aggiornaInterfaccia();
             JOptionPane.showMessageDialog(null, "Prodotti caricati con successo!");
         }
@@ -86,7 +86,7 @@ public class BottoniInserimento extends JPanel implements ActionListener {
     }
 
     private void rimuoviProdotto(String idProdotto) {
-        List<Prodotto> prodotti = fileManager.getProdotti();
+        List<Prodotto> prodotti = productsController.getProdotti();
         boolean rimosso = false;
 
         for (int i = 0; i < prodotti.size(); i++) {
@@ -98,7 +98,7 @@ public class BottoniInserimento extends JPanel implements ActionListener {
         }
 
         if (rimosso) {
-            fileManager.salvaProdotti(); // Salva lo stato aggiornato nel file
+            productsController.salvaProdotti(); // Salva lo stato aggiornato nel file
             aggiornaInterfaccia(); // Aggiorna la UI
             JOptionPane.showMessageDialog(null, "Prodotto rimosso con successo!");
         } else {
@@ -110,7 +110,7 @@ public class BottoniInserimento extends JPanel implements ActionListener {
     private void aggiornaInterfaccia() {
         // Aggiorna l'elenco magazzino
         elencoMagazzino.textArea.setText("");
-        for(Prodotto p : fileManager.getProdotti()) {
+        for(Prodotto p : productsController.getProdotti()) {
             elencoMagazzino.textArea.append(p.toString() + "\n");
         }
 

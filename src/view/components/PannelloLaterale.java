@@ -1,5 +1,7 @@
 package src.view.components;
 
+import src.view.HomePage;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -8,13 +10,16 @@ import java.awt.*;
 
 public class PannelloLaterale extends JPanel {
     private final String[] categories = {
-            "Accessori PC", "Accessori SmartPhone", "Audio, Video e Gaming",
-            "Casa e Ufficio", "Cavetteria", "Componenti PC",
-            "Computer Desktop", "Consumabili", "Notebook e Accessori",
-            "Usato Garantito"
+            "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
+            "CasaeUfficio", "Cavetteria", "ComponentiPC",
+            "ComputerDesktop", "Consumabili", "NotebookeAccessori",
+            "UsatoGarantito"
     };
 
-    public PannelloLaterale() {
+    private final HomePage homePage;
+
+    public PannelloLaterale(HomePage homePage) {
+        this.homePage = homePage;
         setLayout(new BorderLayout(10, 10));
         setBackground(new Color(50, 50, 50));
         setPreferredSize(new Dimension(215, 400));
@@ -32,13 +37,15 @@ public class PannelloLaterale extends JPanel {
         JScrollPane scroller = new JScrollPane(categoryList);
         scroller.setBorder(BorderFactory.createEmptyBorder());
         add(scroller, BorderLayout.CENTER);
-        categoryList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                //TODO
+
+        categoryList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedCategory = categoryList.getSelectedValue();
+                if (selectedCategory != null) {
+                    homePage.mostraCategoria(selectedCategory);
+                }
             }
         });
-        // Logo in fondo
         caricaLogo();
     }
 

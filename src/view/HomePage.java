@@ -1,14 +1,16 @@
 package src.view;
 
 import src.controllers.AuthController;
+import src.controllers.OrdersController;
 import src.models.Prodotto;
-import src.utils.FileManager;
-import src.view.admin.AdminPanel;
+import src.controllers.ProductsController;
+import src.view.admin.ordini.OrderPanel;
+import src.view.admin.prodotti.ProductsPanel;
 import src.view.auth.InterfacciaAuth;
 import src.view.carrello.InterfacciaCart;
 import src.view.components.PannelloCategoria;
 import src.view.components.PannelloLaterale;
-import src.utils.*;
+import src.view.prodotto.ProdottoPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,18 +20,19 @@ import java.util.ArrayList;
 
 public class HomePage extends JFrame implements ActionListener {
 
-    private JButton accountButton;
     private InterfacciaAuth interfacciaAuth;
-    private AdminPanel adminPanel;
+    private ProductsPanel productsPanel;
+    private OrderPanel orderPanel;
     private InterfacciaCart interfacciaCart;
     private final AuthController authController = new AuthController(this);
-    private final FileManager fileManager = new FileManager();
+    private final ProductsController productsController = new ProductsController();
+    private final OrdersController ordersController = new OrdersController();
 
     public HomePage() {
         super("Nucifora's Hub");
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("./icon.png").getImage());
-        PannelloLaterale pannelloLaterale = new PannelloLaterale();
+        PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -41,10 +44,10 @@ public class HomePage extends JFrame implements ActionListener {
                 "ComputerDesktop", "Consumabili", "NotebookeAccessori",
                 "UsatoGarantito"
         };
-        fileManager.caricaProdotti(); // Carica i prodotti all'avvio
+        productsController.caricaProdotti(); // Carica i prodotti all'avvio
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
-            for (Prodotto p : fileManager.getProdotti()) {
+            for (Prodotto p : productsController.getProdotti()) {
                 if(p.getCategoria().equals(categoria)) {
                     System.out.println(p);
                     prodotti.add(p);
@@ -67,13 +70,12 @@ public class HomePage extends JFrame implements ActionListener {
         add(scrollPane, BorderLayout.CENTER);
         setLocation(10, 10);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1080, 720);
+        setSize(1280, 720);
         setResizable(false);
         setJMenuBar(creaBarraMenu());
         updateAuthUI();
         setVisible(true);
     }
-
 
     public void aggiornaVisualizzazioneProdotti() {
         Point location = getLocation();
@@ -82,7 +84,7 @@ public class HomePage extends JFrame implements ActionListener {
 
         // Ricrea l'UI (stesso codice del costruttore)
         setLayout(new BorderLayout());
-        PannelloLaterale pannelloLaterale = new PannelloLaterale();
+        PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
 
         JPanel mainPanel = new JPanel();
@@ -98,7 +100,7 @@ public class HomePage extends JFrame implements ActionListener {
 
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
-            for (Prodotto p : fileManager.getProdotti()) {
+            for (Prodotto p : productsController.getProdotti()) {
                 if(p.getCategoria().equals(categoria)) {
                     prodotti.add(p);
                 }
@@ -135,17 +137,6 @@ public class HomePage extends JFrame implements ActionListener {
 
     public void rimuoviAuth() {
         JMenuBar menuBar = this.getJMenuBar();
-        menuBar.remove(0);
-
-        if (accountButton == null) {
-            ImageIcon imageIcon = new ImageIcon("./icons/login.png");
-            Image scaledImage = imageIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            accountButton = creaBottone(new ImageIcon(scaledImage), "Visualizza Account", "Account");
-        }
-
-        JPanel accountPanel = creaPannelloMenu(FlowLayout.LEFT, accountButton);
-        menuBar.add(accountPanel, BorderLayout.WEST);
-
         menuBar.revalidate();
         menuBar.repaint();
     }
@@ -163,21 +154,31 @@ public class HomePage extends JFrame implements ActionListener {
         leftPanel.setBackground(new Color(50, 50, 50));
 
         if (authController.isLoggedIn()) {
-            if (accountButton == null) {
-                ImageIcon imageIcon = new ImageIcon("./icons/login.png");
-                Image scaledImage = imageIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-                accountButton = creaBottone(new ImageIcon(scaledImage), "Visualizza Account", "Account");
-            }
-            leftPanel.add(accountButton);
-
-            // Bottone admin più visibile
             if (authController.getLogin().isAdmininstrator()) {
-                JButton adminButton = creaBottone("ADMIN PANEL", "Pannello di amministrazione");
+                // Bottone Admin Panel
+                JButton adminButton = creaBottone("PRODOTTI", "Pannello di amministrazione");
                 adminButton.setActionCommand("AdminPanel");
-                adminButton.setBackground(new Color(200, 0, 0)); // Rosso per maggiore visibilità
+                adminButton.setBackground(new Color(200, 0, 0));
                 adminButton.setForeground(Color.WHITE);
                 adminButton.addActionListener(this);
                 leftPanel.add(adminButton);
+
+                // Nuovo bottone Gestione Ordini
+                JButton ordersButton = creaBottone("ORDINI", "Gestisci gli ordini");
+                ordersButton.setActionCommand("OrderManagement");
+                ordersButton.setBackground(new Color(0, 100, 200)); // Blu
+                ordersButton.setForeground(Color.WHITE);
+                ordersButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        mostraPannelloOrdini();
+                    }
+                });
+                leftPanel.add(ordersButton);
+
+                JPanel rightPanel = creaPannelloMenu(FlowLayout.RIGHT,
+                        creaBottone("Esci", "Clicca per uscire"));
+                menuBar.add(rightPanel, BorderLayout.EAST);
             }
         } else {
             JButton accedi = creaBottone("Accedi", "Clicca per accedere");
@@ -191,11 +192,6 @@ public class HomePage extends JFrame implements ActionListener {
         JPanel centerPanel = creaPannelloMenu(FlowLayout.CENTER,
                 creaBottone("Carrello", "Clicca per visualizzare il carrello"));
         menuBar.add(centerPanel, BorderLayout.CENTER);
-
-        // Pannello destro (esci)
-        JPanel rightPanel = creaPannelloMenu(FlowLayout.RIGHT,
-                creaBottone("Esci", "Clicca per uscire"));
-        menuBar.add(rightPanel, BorderLayout.EAST);
 
         menuBar.revalidate();
         menuBar.repaint();
@@ -212,12 +208,8 @@ public class HomePage extends JFrame implements ActionListener {
         menuBar.setLayout(new BorderLayout());
         JPanel centerPanel = creaPannelloMenu(FlowLayout.CENTER,
                 creaBottone("Carrello", "Clicca per visualizzare il carrello"));
-
-        JPanel rightPanel = creaPannelloMenu(FlowLayout.RIGHT,
-                creaBottone("Esci", "Clicca per uscire"));
         menuBar.add(aggiungiAuth(), BorderLayout.WEST);
         menuBar.add(centerPanel, BorderLayout.CENTER);
-        menuBar.add(rightPanel, BorderLayout.EAST);
         return menuBar;
     }
 
@@ -245,27 +237,117 @@ public class HomePage extends JFrame implements ActionListener {
         return button;
     }
 
-    private JButton creaBottone(ImageIcon imageIcon, String tooltip, String actionCommand) {
-        JButton button = new JButton(imageIcon);
-        button.setPreferredSize(new Dimension(100, 30));
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setForeground(Color.WHITE);
-        button.setBackground(new Color(100, 100, 100));
-        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        button.setFocusable(false);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.addActionListener(this);
-        button.setToolTipText(tooltip);
-        button.setActionCommand(actionCommand);
-        return button;
+    private void mostraPannelloProdotti() {
+        if(productsPanel != null)
+            productsPanel.dispose();
+        productsPanel = new ProductsPanel(this);
+        productsPanel.toFront();
     }
 
-    private void mostraPannelloAdmin() {
-        if(adminPanel != null)
-            adminPanel.dispose();
-        adminPanel = new AdminPanel(this);
-        adminPanel.toFront();
+    public void mostraProdotto(Prodotto prodotto) {
+        getContentPane().removeAll();
 
+        // Mantieni il pannello laterale
+        PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
+        add(pannelloLaterale, BorderLayout.WEST);
+
+        // Crea uno JScrollPane che conterrà il ProdottoPanel
+        JScrollPane scrollPane = new JScrollPane(new ProdottoPanel(this, prodotto));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Aggiungi questa linea
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        add(scrollPane, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
+
+    public void mostraHomePage() {
+        getContentPane().removeAll();
+
+        // Ricrea l'interfaccia originale
+        PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
+        add(pannelloLaterale, BorderLayout.WEST);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(new Color(240, 240, 240));
+
+        String[] categorie = {
+                "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
+                "CasaeUfficio", "Cavetteria", "ComponentiPC",
+                "ComputerDesktop", "Consumabili", "NotebookeAccessori",
+                "UsatoGarantito"
+        };
+
+        for (String categoria : categorie) {
+            ArrayList<Prodotto> prodotti = new ArrayList<>();
+            for (Prodotto p : productsController.getProdotti()) {
+                if(p.getCategoria().equals(categoria)) {
+                    prodotti.add(p);
+                }
+            }
+            PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti, this);
+            categoriaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 250));
+            mainPanel.add(categoriaPanel);
+            mainPanel.add(Box.createVerticalStrut(20));
+        }
+
+        mainPanel.add(Box.createVerticalGlue());
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        add(scrollPane, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
+
+    private void mostraPannelloOrdini() {
+        if(orderPanel != null)
+            orderPanel.dispose();
+        orderPanel = new OrderPanel(this);
+        orderPanel.toFront();
+    }
+
+    public void mostraCategoria(String categoria) {
+        getContentPane().removeAll();
+
+        // Mantieni il pannello laterale
+        PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
+        add(pannelloLaterale, BorderLayout.WEST);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(new Color(240, 240, 240));
+
+        // Carica solo i prodotti della categoria selezionata
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        for (Prodotto p : productsController.getProdotti()) {
+            if(p.getCategoria().equals(categoria)) {
+                prodotti.add(p);
+            }
+        }
+
+        PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti, this);
+        categoriaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        mainPanel.add(categoriaPanel);
+        mainPanel.add(Box.createVerticalGlue());
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        add(scrollPane, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -277,7 +359,11 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 break;
             case "Esci":
-                System.exit(0);
+                if(authController.isLoggedIn()){
+                    authController.logout();
+                    JOptionPane.showMessageDialog(this,"Logout eseguito correttamente");
+                    updateAuthUI();
+                }
                 break;
             case "Accedi":
                 if (interfacciaAuth == null || !interfacciaAuth.isVisible()) {
@@ -299,24 +385,40 @@ public class HomePage extends JFrame implements ActionListener {
                 }
                 break;
             case "AdminPanel":
-                mostraPannelloAdmin();
+                mostraPannelloProdotti();
                 break;
         }
     }
 
-    public FileManager getFileManager() {
-        return fileManager;
+    public ProductsController getFileManager() {
+        return productsController;
     }
 
     public AuthController getAuthController() {
         return authController;
     }
 
-    public AdminPanel getAdminPanel() {
-        return adminPanel;
+    public ProductsPanel getAdminPanel() {
+        return productsPanel;
     }
 
     public InterfacciaAuth getInterfacciaAuth() {
         return interfacciaAuth;
+    }
+
+    public OrdersController getOrdersController() {
+        return ordersController;
+    }
+
+    public InterfacciaCart getInterfacciaCart() {
+        return interfacciaCart;
+    }
+
+    public ProductsController getProductsController() {
+        return productsController;
+    }
+
+    public Image getIconImage() {
+        return new ImageIcon("./icon.png").getImage();
     }
 }

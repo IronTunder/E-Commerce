@@ -11,7 +11,8 @@ public class Utente implements Serializable {
     private final char[] password;
     private final String username;
     private final boolean isAdmininstrator;
-    List<Prodotto> carrello = new ArrayList<>();
+    private List<Prodotto> carrello = new ArrayList<>();
+    private List<String> indirizzi = new ArrayList<>();
 
     public Utente(String email, char[] password, String username, boolean isAdmininstrator) {
         this.email = email;
@@ -40,6 +41,14 @@ public class Utente implements Serializable {
         return carrello;
     }
 
+    public List<String> getIndirizzi() {
+        return indirizzi;
+    }
+
+    public void setIndirizzi(List<String> indirizzi) {
+        this.indirizzi = indirizzi;
+    }
+
     public void setCarrello(List<Prodotto> carrello){
         this.carrello = carrello;
     }
@@ -51,4 +60,6 @@ public class Utente implements Serializable {
         Utente utente = (Utente) o;
         return Objects.equals(email, utente.email) && Objects.equals(username, utente.username);
     }
+
+
 }

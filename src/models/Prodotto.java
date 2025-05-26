@@ -85,4 +85,8 @@ public abstract class Prodotto implements Serializable {
                 ", descrizioneOggetto='" + descrizioneOggetto + '\'' +
                 '}';
     }
+
+    public String getDescrizione() {
+        return descrizioneOggetto;
+    }
 }

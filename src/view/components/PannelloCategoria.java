@@ -76,7 +76,7 @@ public class PannelloCategoria extends JPanel{
         card.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //TODO Interfaccia interna di ogni prodotto
+                homePage.mostraProdotto(prodotto);
             }
         });
         card.addMouseListener(new MouseAdapter() {
