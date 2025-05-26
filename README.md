@@ -59,25 +59,25 @@ src/
 │       └── UsatoGarantito.java
 ├── view/              # Interfaccia grafica
 │   ├── admin/         # Pannelli admin
-│       ├── ordini/
-│           └── OrderPanel.java
-│       └── prodotti/  # Pannelli prodotti
-│           ├── BottoniInserimento.java
-│           ├── ElencoMagazzino.java
-│           ├── Inserimento.java
-│           └── ProductsPanel.java
-│
+│   │   ├── ordini/
+│   │       └── OrderPanel.java
+│   │   └── prodotti/  # Pannelli prodotti
+│   │       ├── BottoniInserimento.java
+│   │       ├── ElencoMagazzino.java
+│   │       ├── Inserimento.java
+│   │       └── ProductsPanel.java
+│   │
 │   ├── auth/          # Schermate login/registrazione
-│       ├── InterfacciaAuth.java
-│       ├── Login.java
-│       └── Registrazione.java
+│   │   ├── InterfacciaAuth.java
+│   │   ├── Login.java
+│   │   └── Registrazione.java
 │   ├── carrello/      # Gestione carrello
-│       └── InterfacciaCart.java
+│   │   └── InterfacciaCart.java
 │   ├── components/    # Componenti riutilizzabili
-│       ├── PannelloCategoria.java
-│       └── PannelloLaterale.java
+│   │   ├── PannelloCategoria.java
+│   │   └── PannelloLaterale.java
 │   ├── prodotto/      # Vista dettaglio prodotto
-│       ├── Prodottopanel.java
+│   │   ├── Prodottopanel.java
 │   └── HomePage.java  # Schermata principale
 │App.java # Main
 ```
