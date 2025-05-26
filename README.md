@@ -112,9 +112,13 @@ src/
 - Email: admin@nucifora.com
 - Password: admin123
 
+## Credenziali per gli admin
+- Per registrare un nuovo admin è necessaria
+  una parola chiave che è [pelato<3]
+
 **Utente normale:**
 - Email: user@example.com
-- Password: user123
+- Password: user1234
 
 ## Contributi
 
