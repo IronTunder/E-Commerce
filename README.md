@@ -80,6 +80,7 @@ src/
 │   │   ├── Prodottopanel.java
 │   └── HomePage.java  # Schermata principale
 │App.java # Main
+└──
 ```
 
 ## Requisiti di Sistema
