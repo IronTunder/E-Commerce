@@ -13,8 +13,8 @@ public class AccessoriPC extends Prodotto {
     private final boolean ergonomico;
 
 
-    public AccessoriPC(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoAccessorio, String connettivita, boolean rgb, String compatibilitaSistema, String dimensioni, boolean ergonomico) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public AccessoriPC(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String tipoAccessorio, String connettivita, boolean rgb, String compatibilitaSistema, String dimensioni, boolean ergonomico) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (tipoAccessorio == null || tipoAccessorio.trim().isEmpty()) {
             throw new IllegalArgumentException("Il tipo di accessorio non può essere vuoto");

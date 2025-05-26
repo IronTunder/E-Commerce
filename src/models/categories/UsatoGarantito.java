@@ -10,8 +10,8 @@ public class UsatoGarantito extends Prodotto {
     private final int mesiGaranziaResidua;
     private final boolean includeAccessoriOriginali;
 
-    public UsatoGarantito(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String statoUsura, int annoProduzione, int mesiGaranziaResidua, boolean includeAccessoriOriginali) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public UsatoGarantito(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String statoUsura, int annoProduzione, int mesiGaranziaResidua, boolean includeAccessoriOriginali) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (statoUsura == null || statoUsura.trim().isEmpty()) {
             throw new IllegalArgumentException("Lo stato di usura non può essere vuoto");

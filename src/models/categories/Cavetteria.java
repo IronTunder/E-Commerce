@@ -10,8 +10,8 @@ public class Cavetteria extends Prodotto {
     private final boolean supporta4K;
     private final boolean rinforzato;
 
-    public Cavetteria(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoConnettori, double lunghezzaMetri, boolean supporta4K, boolean rinforzato) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public Cavetteria(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String tipoConnettori, double lunghezzaMetri, boolean supporta4K, boolean rinforzato) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (tipoConnettori == null || tipoConnettori.trim().isEmpty()) {
             throw new IllegalArgumentException("Il tipo di connettori non può essere vuoto");

@@ -11,8 +11,8 @@ public class CasaEUfficio extends Prodotto {
     private final boolean fronteRetroAutomatico;
     private final boolean wifiIntegrato;
 
-    public CasaEUfficio(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tecnologia, int velocitaStampaPPM, boolean fronteRetroAutomatico, boolean wifiIntegrato) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public CasaEUfficio(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String tecnologia, int velocitaStampaPPM, boolean fronteRetroAutomatico, boolean wifiIntegrato) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (tecnologia == null || tecnologia.trim().isEmpty()) {
             throw new IllegalArgumentException("La tecnologia non può essere vuota");

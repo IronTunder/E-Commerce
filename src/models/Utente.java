@@ -2,6 +2,7 @@ package src.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Utente implements Serializable {
@@ -9,7 +10,8 @@ public class Utente implements Serializable {
     private final char[] password;
     private final String username;
     private final boolean isAdmininstrator;
-    ArrayList<Prodotto> carrello = new ArrayList<>();
+    List<Prodotto> carrello = new ArrayList<>();
+
 
     public Utente(String email, char[] password, String username, boolean isAdmininstrator) {
         this.email = email;
@@ -34,8 +36,12 @@ public class Utente implements Serializable {
         return isAdmininstrator;
     }
 
-    public ArrayList<Prodotto> getCarrello() {
+    public List<Prodotto> getCarrello() {
         return carrello;
+    }
+
+    public void setCarrello(List<Prodotto> carrello){
+        this.carrello = carrello;
     }
 
     @Override

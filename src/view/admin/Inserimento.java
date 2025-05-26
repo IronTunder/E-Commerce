@@ -1,4 +1,4 @@
-package src.utils;
+package src.view.admin;
 
 import src.models.Prodotto;
 import src.models.categories.*;
@@ -7,8 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Inserimento extends JPanel {
     // Campi comuni a tutti i prodotti
@@ -16,7 +19,8 @@ public class Inserimento extends JPanel {
     private final JTextField id = new JTextField();
     private final JTextField marca = new JTextField();
     private final JTextField prezzo = new JTextField();
-    private final JButton selezionaImmagine = new JButton("Seleziona Immagine");
+    private final JTextField urlImage = new JTextField();
+    private final JButton verificaImmagine = new JButton("Verifica Immagine");
     private ImageIcon iconaSelezionata;
     private final JTextArea descrizione = new JTextArea();
 
@@ -33,7 +37,7 @@ public class Inserimento extends JPanel {
         setLayout(new BorderLayout(10, 10));
 
         // Pannello per i campi comuni
-        JPanel commonFieldsPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        JPanel commonFieldsPanel = new JPanel(new GridLayout(8, 2, 10, 10));
         JScrollPane descriptionScrollPane = new JScrollPane(descrizione);
         descriptionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         descriptionScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -56,8 +60,10 @@ public class Inserimento extends JPanel {
         commonFieldsPanel.add(prezzo);
         commonFieldsPanel.add(new JLabel("Descrizione:"));
         commonFieldsPanel.add(descriptionScrollPane);
-        commonFieldsPanel.add(new JLabel("Immagine:"));
-        commonFieldsPanel.add(selezionaImmagine);
+        commonFieldsPanel.add(new JLabel("URL Immagine:"));
+        commonFieldsPanel.add(urlImage);
+        commonFieldsPanel.add(new JLabel(""));
+        commonFieldsPanel.add(verificaImmagine);
 
         // Configura il listener per la ComboBox
         categoriaComboBox.addActionListener(new ActionListener() {
@@ -68,12 +74,18 @@ public class Inserimento extends JPanel {
         });
 
         // Pannello per il pulsante di selezione immagine
-        selezionaImmagine.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                ImageIcon icon = new ImageIcon(fileChooser.getSelectedFile().getPath());
-                Image image = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-                iconaSelezionata = new ImageIcon(image);
+        verificaImmagine.addActionListener(e -> {
+            try {
+                String imageUrl = urlImage.getText();
+                if (!imageUrl.isEmpty()) {
+                    ImageIcon icon = new ImageIcon(new URL(imageUrl));
+                    Image image = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    iconaSelezionata = new ImageIcon(image);
+                    JOptionPane.showMessageDialog(this, "Immagine verificata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (MalformedURLException ex) {
+                JOptionPane.showMessageDialog(this, "URL non valido!", "Errore", JOptionPane.ERROR_MESSAGE);
+                iconaSelezionata = null;
             }
         });
 
@@ -254,8 +266,9 @@ public class Inserimento extends JPanel {
         id.setText("");
         marca.setText("");
         prezzo.setText("");
-        iconaSelezionata = null;
         descrizione.setText("");
+        urlImage.setText("");
+        iconaSelezionata = null;
 
         // Resetta tutti i campi specifici
         for (JComponent[] components : specificFieldsMap.values()) {
@@ -273,13 +286,11 @@ public class Inserimento extends JPanel {
         try {
             String selectedCategory = (String) categoriaComboBox.getSelectedItem();
             JComponent[] fields = specificFieldsMap.get(selectedCategory);
-
-            // Creazione del prodotto in base alla categoria selezionata
-            switch (selectedCategory) {
+            switch (Objects.requireNonNull(selectedCategory)) {
                 case "ComputerDesktop":
                     return new ComputerDesktop(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // CPU
                             ((JTextField) fields[3]).getText(),  // GPU
                             Integer.parseInt(((JTextField) fields[5]).getText()),  // RAM
@@ -290,7 +301,7 @@ public class Inserimento extends JPanel {
                 case "AccessoriPC":
                     return new AccessoriPC(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tipo Accessorio
                             ((JTextField) fields[3]).getText(),  // Connettività
                             ((JCheckBox) fields[5]).isSelected(),  // RGB
@@ -302,7 +313,7 @@ public class Inserimento extends JPanel {
                 case "ComponentiPC":
                     return new ComponentiPC(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tipo Componente
                             ((JTextField) fields[3]).getText(),  // Specifica Tecnica
                             Integer.parseInt(((JTextField) fields[5]).getText()),  // Capacità GB
@@ -312,7 +323,7 @@ public class Inserimento extends JPanel {
                 case "UsatoGarantito":
                     return new UsatoGarantito(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Stato Usura
                             Integer.parseInt(((JTextField) fields[3]).getText()),  // Anno Produzione
                             Integer.parseInt(((JTextField) fields[5]).getText()),  // Mesi Garanzia
@@ -322,7 +333,7 @@ public class Inserimento extends JPanel {
                 case "AccessoriSmartPhone":
                     return new AccessoriSmartPhone(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tipo Materiale
                             Integer.parseInt(((JTextField) fields[3]).getText()),  // Capacità PowerBank
                             ((JCheckBox) fields[5]).isSelected(),  // Ricarica Wireless
@@ -332,7 +343,7 @@ public class Inserimento extends JPanel {
                 case "AudioVideoGaming":
                     return new AudioVideoGaming(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tipo Prodotto
                             Integer.parseInt(((JTextField) fields[3]).getText()),  // Pollici
                             Integer.parseInt(((JTextField) fields[5]).getText()),  // Hz
@@ -343,7 +354,7 @@ public class Inserimento extends JPanel {
                 case "Consumabili":
                     return new Consumabili(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             Double.parseDouble(((JTextField) fields[1]).getText()),  // Quantità
                             ((JTextField) fields[3]).getText()  // Unità di Misura
                     );
@@ -351,7 +362,7 @@ public class Inserimento extends JPanel {
                 case "CasaEUfficio":
                     return new CasaEUfficio(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tecnologia
                             Integer.parseInt(((JTextField) fields[3]).getText()),  // Velocità Stampa
                             ((JCheckBox) fields[5]).isSelected(),  // Fronte/Retro
@@ -361,7 +372,7 @@ public class Inserimento extends JPanel {
                 case "Cavetteria":
                     return new Cavetteria(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),  // Tipo Connettori
                             Double.parseDouble(((JTextField) fields[3]).getText()),  // Lunghezza
                             ((JCheckBox) fields[5]).isSelected(),  // Supporta 4K
@@ -371,7 +382,7 @@ public class Inserimento extends JPanel {
                 case "NotebookEAccessori":
                     return new NotebookEAccessori(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
-                            iconaSelezionata, Double.parseDouble(prezzo.getText()), descrizione.getText(),
+                            urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             Double.parseDouble(((JTextField) fields[1]).getText()),  // Dimensione Display
                             ((JTextField) fields[3]).getText(),  // Risoluzione
                             ((JCheckBox) fields[5]).isSelected(),  // Touchscreen

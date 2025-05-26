@@ -11,8 +11,8 @@ public class AudioVideoGaming extends Prodotto {
     private final boolean supportaHDR;
     private final boolean wireless;
 
-    public AudioVideoGaming(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoProdotto, int pollici, int hz, boolean supportaHDR, boolean wireless) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public AudioVideoGaming(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String tipoProdotto, int pollici, int hz, boolean supportaHDR, boolean wireless) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (tipoProdotto == null || tipoProdotto.trim().isEmpty()) {
             throw new IllegalArgumentException("Il tipo di prodotto non può essere vuoto");

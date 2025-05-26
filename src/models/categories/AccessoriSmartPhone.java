@@ -10,8 +10,8 @@ public class AccessoriSmartPhone extends Prodotto {
     private final boolean ricaricaWireless;
     private final boolean magnetico;
 
-    public AccessoriSmartPhone(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String tipoMateriale, int capacitaPowerBank, boolean ricaricaWireless, boolean magnetico) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public AccessoriSmartPhone(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String tipoMateriale, int capacitaPowerBank, boolean ricaricaWireless, boolean magnetico) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (tipoMateriale == null || tipoMateriale.trim().isEmpty()) {
             throw new IllegalArgumentException("Il tipo di materiale non può essere vuoto");

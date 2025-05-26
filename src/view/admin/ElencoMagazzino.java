@@ -1,15 +1,16 @@
-package src.utils;
+package src.view.admin;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+
 import src.models.Prodotto;
 
 public class ElencoMagazzino extends JPanel {
     JTextArea textArea = new JTextArea();
-    ArrayList<Prodotto> prodotti = new ArrayList<>();
 
-    public ElencoMagazzino(){
+    public ElencoMagazzino(List<Prodotto> prodotti){
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -19,13 +20,11 @@ public class ElencoMagazzino extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 300));
-
+        for (Prodotto prodotto : prodotti) {
+            textArea.append(prodotto.toString());
+        }
         add(new JLabel("Elenco Prodotti", JLabel.CENTER), BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
-    }
-
-    public ArrayList<Prodotto> getProdotti() {
-        return prodotti;
     }
 
     public JTextArea getTextArea() {

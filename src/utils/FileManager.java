@@ -8,24 +8,23 @@ import java.util.List;
 
 public class FileManager {
     private static final String PRODUCTS_FILE = "files/products.dat";
-    private final List<Prodotto> prodotti;
+    private final List<Prodotto> prodotti = new ArrayList<>();
 
     public FileManager() {
-        this.prodotti = new ArrayList<>();
         new File("files").mkdirs();
     }
 
     public void salvaProdotti() {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                 new FileOutputStream(PRODUCTS_FILE))) {
-
-            for (Prodotto prodotto : prodotti) {
-                objectOutputStream.writeObject(prodotto);
-            }
+            objectOutputStream.writeObject(prodotti);
+            System.out.println("Prodotti salvati: " + prodotti);
         } catch (IOException e) {
             throw new RuntimeException("Errore durante il salvataggio dei prodotti", e);
         }
     }
+
+
 
     public void caricaProdotti() {
         prodotti.clear();
@@ -35,35 +34,19 @@ public class FileManager {
             System.out.println("File non trovato o vuoto: " + file.getAbsolutePath());
             return;
         }
-
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            while (true) {
-                try {
-                    Object obj = ois.readObject();
-                    if (obj instanceof Prodotto) {
-                        prodotti.add((Prodotto) obj);
-                        System.out.println("Caricato prodotto: " + obj);
-                    }
-                } catch (EOFException e) {
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Classe non trovata durante la deserializzazione: " + e.getMessage());
-            e.printStackTrace();
-        } catch (InvalidClassException e) {
-            System.err.println("Problema di versione della classe: " + e.getMessage());
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            System.err.println("Formato file corrotto: " + e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.err.println("Errore IO durante la lettura: " + e.getMessage());
+            List<Prodotto> caricati = (List<Prodotto>) ois.readObject();
+            prodotti.addAll(caricati);
+            System.out.println("Prodotti caricati: " + prodotti);
+        }catch (EOFException e){
+            System.out.println("File vuoto");
+        }
+        catch (ClassNotFoundException | IOException e) {
+            System.err.println("Errore durante il caricamento: " + e.getMessage());
             e.printStackTrace();
         }
-
-        System.out.println("Totale prodotti caricati: " + prodotti.size());
     }
+
 
     public boolean aggiungiProdotto(Prodotto prodotto) {
         if (prodotto == null) {
@@ -79,16 +62,29 @@ public class FileManager {
     }
 
     public List<Prodotto> getProdotti() {
-        return new ArrayList<>(prodotti);
+        return prodotti;
     }
 
+
 //    public boolean rimuoviProdotto(String id) {
-//        for (Prodotto p : new ArrayList<>(prodotti)) {
+//        // Crea una copia della lista per evitare ConcurrentModificationException
+//        List<Prodotto> prodottiDaRimuovere = new ArrayList<>();
+//
+//        for (Prodotto p : prodotti) {
 //            if (p.getId().equals(id)) {
-//                prodotti.remove(p);
-//                return true;
+//                prodottiDaRimuovere.add(p);
 //            }
 //        }
-//        return false;
+//
+//        boolean rimosso = false;
+//        for (Prodotto p : prodottiDaRimuovere) {
+//            rimosso = prodotti.remove(p) || rimosso;
+//        }
+//
+//        if (rimosso) {
+//            salvaProdotti();
+//        }
+//
+//        return rimosso;
 //    }
 }

@@ -9,11 +9,11 @@ public abstract class Prodotto implements Serializable {
     private final String id;
     private final String marca;
     private final String categoria;
-    private final ImageIcon icon;
+    private final String urlImage;
     private final double prezzo;
     private final String descrizioneOggetto;
 
-    public Prodotto(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto) {
+    public Prodotto(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto) {
         if (nome == null || nome.trim().isEmpty()) {
             throw new IllegalArgumentException("Il nome non può essere vuoto");
         }
@@ -37,14 +37,14 @@ public abstract class Prodotto implements Serializable {
         this.id = id;
         this.marca = marca;
         this.categoria = categoria;
-        this.icon = icon;
+        this.urlImage = urlImage;
         this.prezzo = prezzo;
         this.descrizioneOggetto = descrizioneOggetto;
     }
 
 
-    public ImageIcon getIcon() {
-        return icon;
+    public String getIcon() {
+        return urlImage;
     }
 
     public String getCategoria() {
@@ -67,6 +67,10 @@ public abstract class Prodotto implements Serializable {
         return prezzo;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
     public String getDescrizioneOggetto() {return descrizioneOggetto;}
 
     @Override
@@ -76,7 +80,7 @@ public abstract class Prodotto implements Serializable {
                 ", id='" + id + '\'' +
                 ", marca='" + marca + '\'' +
                 ", categoria='" + categoria + '\'' +
-                ", icon=" + icon +
+                ", urlImage=" + urlImage +
                 ", prezzo=" + prezzo +
                 ", descrizioneOggetto='" + descrizioneOggetto + '\'' +
                 '}';

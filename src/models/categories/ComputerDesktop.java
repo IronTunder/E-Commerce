@@ -11,8 +11,8 @@ public class ComputerDesktop extends Prodotto {
     private final int memoriaGB;
     private final String SO;
 
-    public ComputerDesktop(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, String cpu, String gpu, int ramGB, int memoriaGB, String SO) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public ComputerDesktop(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, String cpu, String gpu, int ramGB, int memoriaGB, String SO) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (cpu == null || cpu.trim().isEmpty()) {
             throw new IllegalArgumentException("La CPU non può essere vuota");

@@ -7,8 +7,8 @@ public class Consumabili extends Prodotto {
     private final double quantita;
     private final String unitaDiMisura;
 
-    public Consumabili(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, double quantita, String unitaDiMisura) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public Consumabili(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, double quantita, String unitaDiMisura) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (quantita <= 0) {
             throw new IllegalArgumentException("La quantità deve essere maggiore di 0");

@@ -13,8 +13,8 @@ public class NotebookEAccessori extends Prodotto {
     private final int ramGB;
 
 
-    public NotebookEAccessori(String nome, String id, String marca, String categoria, ImageIcon icon, double prezzo, String descrizioneOggetto, double dimensioneDisplayPollici, String risoluzione, boolean touchscreen, int autonomiaOre, String cpu, int ramGB) {
-        super(nome, id, marca, categoria, icon, prezzo, descrizioneOggetto);
+    public NotebookEAccessori(String nome, String id, String marca, String categoria, String urlImage, double prezzo, String descrizioneOggetto, double dimensioneDisplayPollici, String risoluzione, boolean touchscreen, int autonomiaOre, String cpu, int ramGB) {
+        super(nome, id, marca, categoria, urlImage, prezzo, descrizioneOggetto);
 
         if (dimensioneDisplayPollici <= 0) {
             throw new IllegalArgumentException("La dimensione del display deve essere maggiore di 0");
