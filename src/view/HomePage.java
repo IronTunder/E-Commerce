@@ -152,7 +152,6 @@ public class HomePage extends JFrame implements ActionListener {
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(new Color(50, 50, 50));
-
         if (authController.isLoggedIn()) {
             if (authController.getLogin().isAdmininstrator()) {
                 // Bottone Admin Panel

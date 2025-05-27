@@ -10,11 +10,10 @@ import java.util.Arrays;
 public class AuthController {
     private Utente login = null;
     HomePage homePage;
-    private static final String USERS_FILE = "files/users.dat";
+    private static final String USERS_FILE = "src/files/users.dat";
 
     public AuthController(HomePage homePage) {
         this.homePage = homePage;
-        new File("files").mkdirs();
     }
 
     public void registraUtente(Utente utente) {

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersController {
-    private static final String PRODUCTS_FILE = "files/orders.dat";
+    private static final String PRODUCTS_FILE = "src/files/orders.dat";
     private final List<Ordine> ordini = new ArrayList<>();
 
     public OrdersController() {
-        new File("files").mkdirs();
+
     }
 
     public void salvaOrdini() {
