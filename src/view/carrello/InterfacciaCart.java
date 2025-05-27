@@ -62,13 +62,6 @@ public class InterfacciaCart extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
-        // Verifica e gestione indirizzo
-        if (!checkAndRequestAddress()) {
-            // Se non c'è indirizzo, mostra solo un messaggio e disabilita tutto
-            showNoAddressMessage();
-            return;
-        }
-
         // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
@@ -109,6 +102,10 @@ public class InterfacciaCart extends JFrame {
 
         // Get user's addresses or use default
         // Verifica che authController e getLogin() non siano null
+        if (!checkAndRequestAddress()) {
+            showNoAddressMessage();
+            return;
+        }
         if (authController != null && authController.getLogin() != null) {
             // Inizializza la lista degli indirizzi, assicurandoti che non sia null
             List<String> indirizzi = authController.getLogin().getIndirizzi();
@@ -353,7 +350,6 @@ public class InterfacciaCart extends JFrame {
     private void updateCartDisplay() {
         Utente currentUser = authController.getLogin();
         List<Prodotto> cart = currentUser.getCarrello();
-
         JScrollPane scrollPane = (JScrollPane) mainPanel.getComponent(1);
         JPanel itemsPanel = (JPanel) scrollPane.getViewport().getView();
         itemsPanel.removeAll();
@@ -457,7 +453,7 @@ public class InterfacciaCart extends JFrame {
 
         JButton increaseButton = new JButton("+");
         increaseButton.setFont(new Font("Arial", Font.BOLD, 12));
-        increaseButton.setPreferredSize(new Dimension(40, 25));
+        increaseButton.setPreferredSize(new Dimension(45, 25));
         increaseButton.addActionListener(e -> {
             updateQuantity(prodotto, 1);
             cartModified = true;
