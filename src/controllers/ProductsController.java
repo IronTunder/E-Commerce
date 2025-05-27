@@ -65,4 +65,26 @@ public class ProductsController {
         return prodotti;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

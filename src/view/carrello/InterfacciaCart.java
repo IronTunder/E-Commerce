@@ -62,10 +62,6 @@ public class InterfacciaCart extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
-        if (!checkAndRequestAddress()) {
-            showNoAddressMessage();
-            return;
-        }
 
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
@@ -74,6 +70,7 @@ public class InterfacciaCart extends JFrame {
         titleLabel.setForeground(new Color(50, 50, 50));
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
+
 
         JPanel itemsPanel = new JPanel();
         itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
@@ -85,6 +82,7 @@ public class InterfacciaCart extends JFrame {
         itemsScrollPane.getViewport().setBackground(new Color(248, 248, 248));
         mainPanel.add(itemsScrollPane, BorderLayout.CENTER);
 
+
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(new Color(248, 248, 248));
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -92,15 +90,24 @@ public class InterfacciaCart extends JFrame {
                 BorderFactory.createEmptyBorder(15, 0, 0, 0)
         ));
 
+
         JPanel shippingTotalPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         shippingTotalPanel.setBackground(new Color(248, 248, 248));
+
 
         JPanel shippingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         shippingPanel.setBackground(new Color(248, 248, 248));
         JLabel shippingLabel = new JLabel("Indirizzo di spedizione:");
         shippingLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
+
+
+        if (!checkAndRequestAddress()) {
+            showNoAddressMessage();
+            return;
+        }
         if (authController != null && authController.getLogin() != null) {
+
             List<String> indirizzi = authController.getLogin().getIndirizzi();
             if (indirizzi == null) {
                 indirizzi = new ArrayList<>();
@@ -131,10 +138,12 @@ public class InterfacciaCart extends JFrame {
                 });
             }
 
+
             indirizzoSpedizioneComboBox = new JComboBox<>(indirizzi.toArray(new String[0]));
             indirizzoSpedizioneComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
             indirizzoSpedizioneComboBox.setPreferredSize(new Dimension(300, 25));
         } else {
+
             indirizzoSpedizioneComboBox = new JComboBox<>();
             System.err.println("Errore: authController o login non disponibili");
         }
@@ -142,12 +151,14 @@ public class InterfacciaCart extends JFrame {
         shippingPanel.add(indirizzoSpedizioneComboBox);
         shippingTotalPanel.add(shippingPanel);
 
+
         totalLabel = new JLabel("Totale: ", JLabel.RIGHT);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalLabel.setForeground(new Color(70, 70, 70));
         shippingTotalPanel.add(totalLabel);
 
         bottomPanel.add(shippingTotalPanel, BorderLayout.NORTH);
+
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         buttonsPanel.setBackground(new Color(248, 248, 248));
@@ -194,15 +205,19 @@ public class InterfacciaCart extends JFrame {
         JDialog addressDialog = createAddressDialog();
         final boolean[] addressProvided = {false};
 
+
         this.setEnabled(false);
+
 
         addressDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 InterfacciaCart.this.setEnabled(true);
                 if (!addressProvided[0]) {
+
                     showNoAddressMessage();
                 } else {
+
                     mainPanel.removeAll();
                     initUI();
                     revalidate();
@@ -222,13 +237,16 @@ public class InterfacciaCart extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setResizable(false);
 
+
         if (getIconImage() != null) {
             dialog.setIconImage(getIconImage());
         }
 
+
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
+
 
         JLabel messageLabel = new JLabel(
                 "<html><div style='text-align: center;'>"
@@ -238,6 +256,7 @@ public class InterfacciaCart extends JFrame {
         messageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(messageLabel, BorderLayout.NORTH);
+
 
         JPanel addressPanel = new JPanel(new BorderLayout());
         addressPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
@@ -251,6 +270,7 @@ public class InterfacciaCart extends JFrame {
         addressPanel.add(addressField, BorderLayout.CENTER);
         mainPanel.add(addressPanel, BorderLayout.CENTER);
 
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
@@ -263,11 +283,13 @@ public class InterfacciaCart extends JFrame {
         saveButton.addActionListener(e -> {
             String address = addressField.getText().trim();
             if (!address.isEmpty()) {
+
                 if (authController.getLogin().getIndirizzi() == null) {
                     authController.getLogin().setIndirizzi(new ArrayList<>());
                 }
                 authController.getLogin().getIndirizzi().add(address);
                 updateUserProfile();
+
 
                 SwingUtilities.invokeLater(() -> {
                     dialog.dispose();
@@ -328,7 +350,6 @@ public class InterfacciaCart extends JFrame {
     private void updateCartDisplay() {
         Utente currentUser = authController.getLogin();
         List<Prodotto> cart = currentUser.getCarrello();
-
         JScrollPane scrollPane = (JScrollPane) mainPanel.getComponent(1);
         JPanel itemsPanel = (JPanel) scrollPane.getViewport().getView();
         itemsPanel.removeAll();
@@ -366,6 +387,7 @@ public class InterfacciaCart extends JFrame {
         itemPanel.setBackground(Color.WHITE);
         itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
+
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(Color.WHITE);
         imagePanel.setPreferredSize(new Dimension(IMG_WIDTH, IMG_HEIGHT));
@@ -392,6 +414,7 @@ public class InterfacciaCart extends JFrame {
         }).start();
         imagePanel.add(imgLabel);
 
+
         JPanel infoPanel = new JPanel(new BorderLayout(5, 10));
         infoPanel.setBackground(Color.WHITE);
 
@@ -409,6 +432,7 @@ public class InterfacciaCart extends JFrame {
         infoPanel.add(nameLabel, BorderLayout.NORTH);
         infoPanel.add(priceLabel, BorderLayout.CENTER);
         infoPanel.add(totalLabel, BorderLayout.SOUTH);
+
 
         JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         quantityPanel.setBackground(Color.WHITE);
@@ -429,7 +453,7 @@ public class InterfacciaCart extends JFrame {
 
         JButton increaseButton = new JButton("+");
         increaseButton.setFont(new Font("Arial", Font.BOLD, 12));
-        increaseButton.setPreferredSize(new Dimension(40, 25));
+        increaseButton.setPreferredSize(new Dimension(45, 25));
         increaseButton.addActionListener(e -> {
             updateQuantity(prodotto, 1);
             cartModified = true;
@@ -438,6 +462,7 @@ public class InterfacciaCart extends JFrame {
         quantityPanel.add(decreaseButton);
         quantityPanel.add(quantityLabel);
         quantityPanel.add(increaseButton);
+
 
         JButton removeButton = new JButton("Rimuovi");
         removeButton.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -448,6 +473,7 @@ public class InterfacciaCart extends JFrame {
             cartModified = true;
         });
 
+
         JPanel controlPanel = new JPanel(new BorderLayout(10, 10));
         controlPanel.setBackground(Color.WHITE);
 
@@ -457,6 +483,7 @@ public class InterfacciaCart extends JFrame {
         centerPanel.add(removeButton);
 
         controlPanel.add(centerPanel, BorderLayout.CENTER);
+
 
         JPanel contentPanel = new JPanel(new BorderLayout(15, 0));
         contentPanel.setBackground(Color.WHITE);
@@ -506,6 +533,7 @@ public class InterfacciaCart extends JFrame {
             return;
         }
 
+
         if (indirizzoSpedizioneComboBox.getSelectedItem() == null ||
                 indirizzoSpedizioneComboBox.getSelectedItem().equals("Nessun indirizzo disponibile")) {
             JOptionPane.showMessageDialog(this,
@@ -531,7 +559,9 @@ public class InterfacciaCart extends JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
         if (option == JOptionPane.YES_OPTION) {
+
             List<Prodotto> prodottiOrdinati = new ArrayList<>(currentUser.getCarrello());
+
 
             Ordine nuovoOrdine = new Ordine(
                     currentUser,
@@ -543,8 +573,10 @@ public class InterfacciaCart extends JFrame {
                     "Da spedire"
             );
 
+
             ordersController.aggiungiOrdine(nuovoOrdine);
             ordersController.salvaOrdini();
+
             currentUser.setCarrello(new ArrayList<>());
             cartModified = true;
             updateUserProfile();

@@ -18,14 +18,17 @@ public class Registrazione extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+
         addField(gbc, 0, "Email:", emailField);
         addField(gbc, 1, "Username:", usernameField);
         addField(gbc, 2, "Password:", passwordField);
         addField(gbc, 3, "Conferma Password:", confirmPasswordField);
 
+
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
         add(termsCheckbox, gbc);
+
 
         gbc.gridx = 0; gbc.gridy = 5;
         gbc.gridwidth = 2;
@@ -35,6 +38,7 @@ public class Registrazione extends JPanel {
         adminPanel.add(adminPasswordField);
         adminPasswordField.setEnabled(false);
         add(adminPanel, gbc);
+
 
         adminCheckbox.addActionListener(e -> {
             adminPasswordField.setEnabled(adminCheckbox.isSelected());

@@ -24,11 +24,14 @@ public class InterfacciaAuth extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+
         cardPanel.add(registrazione, "Registrazione");
         cardPanel.add(loginPanel, "Login");
 
+
         confBottonePrincipale();
         confSwitch();
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -42,6 +45,7 @@ public class InterfacciaAuth extends JFrame {
 
         buttonPanel.add(primaryButtonPanel);
         buttonPanel.add(switchButtonPanel);
+
 
         add(cardPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);

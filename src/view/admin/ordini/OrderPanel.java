@@ -40,6 +40,7 @@ public class OrderPanel extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
+
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
         JLabel titleLabel = new JLabel("Gestione Ordini");
@@ -47,6 +48,7 @@ public class OrderPanel extends JFrame {
         titleLabel.setForeground(new Color(50, 50, 50));
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
+
 
         JPanel ordersPanel = new JPanel();
         ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
@@ -95,6 +97,7 @@ public class OrderPanel extends JFrame {
         orderPanel.setBackground(Color.WHITE);
         orderPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
 
+
         JPanel infoPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         infoPanel.setBackground(Color.WHITE);
 
@@ -120,6 +123,7 @@ public class OrderPanel extends JFrame {
         infoPanel.add(addressLabel);
         infoPanel.add(totalLabel);
 
+
         JPanel productsPanel = new JPanel(new BorderLayout());
         productsPanel.setBackground(Color.WHITE);
 
@@ -138,6 +142,7 @@ public class OrderPanel extends JFrame {
 
         productsPanel.add(new JLabel("Prodotti:"), BorderLayout.NORTH);
         productsPanel.add(listScrollPane, BorderLayout.CENTER);
+
 
         JPanel statusPanel = new JPanel(new BorderLayout(10, 10));
         statusPanel.setBackground(Color.WHITE);
@@ -164,6 +169,7 @@ public class OrderPanel extends JFrame {
 
         statusPanel.add(statusLabel, BorderLayout.CENTER);
         statusPanel.add(shipButton, BorderLayout.EAST);
+
 
         JPanel contentPanel = new JPanel(new BorderLayout(15, 10));
         contentPanel.setBackground(Color.WHITE);

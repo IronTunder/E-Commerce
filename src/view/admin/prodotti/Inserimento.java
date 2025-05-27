@@ -24,14 +24,18 @@ public class Inserimento extends JPanel {
     private ImageIcon iconaSelezionata;
     private final JTextArea descrizione = new JTextArea();
 
+
     private final JComboBox<String> categoriaComboBox = new JComboBox<>();
 
+
     private final JPanel specificFieldsPanel = new JPanel();
+
 
     private final Map<String, JComponent[]> specificFieldsMap = new HashMap<>();
 
     public Inserimento() {
         setLayout(new BorderLayout(10, 10));
+
 
         JPanel commonFieldsPanel = new JPanel(new GridLayout(8, 2, 10, 10));
         JScrollPane descriptionScrollPane = new JScrollPane(descrizione);
@@ -40,7 +44,9 @@ public class Inserimento extends JPanel {
         descrizione.setLineWrap(true);
         descrizione.setWrapStyleWord(true);
 
+
         initializeCategories();
+
 
         commonFieldsPanel.add(new JLabel("Categoria:"));
         commonFieldsPanel.add(categoriaComboBox);
@@ -59,12 +65,14 @@ public class Inserimento extends JPanel {
         commonFieldsPanel.add(new JLabel(""));
         commonFieldsPanel.add(verificaImmagine);
 
+
         categoriaComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateSpecificFields();
             }
         });
+
 
         verificaImmagine.addActionListener(e -> {
             try {
@@ -81,13 +89,16 @@ public class Inserimento extends JPanel {
             }
         });
 
+
         add(commonFieldsPanel, BorderLayout.NORTH);
         add(new JScrollPane(specificFieldsPanel), BorderLayout.CENTER);
+
 
         updateSpecificFields();
     }
 
     private void initializeCategories() {
+
         categoriaComboBox.addItem("ComputerDesktop");
         categoriaComboBox.addItem("AccessoriPC");
         categoriaComboBox.addItem("ComponentiPC");
@@ -99,10 +110,12 @@ public class Inserimento extends JPanel {
         categoriaComboBox.addItem("Cavetteria");
         categoriaComboBox.addItem("NotebookEAccessori");
 
+
         initializeSpecificFields();
     }
 
     private void initializeSpecificFields() {
+
         JTextField cpuField = new JTextField();
         JTextField gpuField = new JTextField();
         JTextField ramField = new JTextField();
@@ -115,6 +128,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Memoria (GB):"), memoriaField,
                 new JLabel("Sistema Operativo:"), soField
         });
+
 
         JTextField tipoAccessorioField = new JTextField();
         JTextField connettivitaField = new JTextField();
@@ -131,6 +145,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Ergonomico:"), ergonomicoCheckBox
         });
 
+
         JTextField tipoComponenteField = new JTextField();
         JTextField specificaTecnicaField = new JTextField();
         JTextField capacitaGBField = new JTextField();
@@ -141,6 +156,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Capacità (GB):"), capacitaGBField,
                 new JLabel("Compatibilità:"), compatibilita2Field
         });
+
 
         JTextField statoUsuraField = new JTextField();
         JTextField annoProduzioneField = new JTextField();
@@ -153,6 +169,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Accessori Originali:"), accessoriOriginaliCheckBox
         });
 
+
         JTextField tipoMaterialeField = new JTextField();
         JTextField capacitaPowerBankField = new JTextField();
         JCheckBox ricaricaWirelessCheckBox = new JCheckBox();
@@ -163,6 +180,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Ricarica Wireless:"), ricaricaWirelessCheckBox,
                 new JLabel("Magnetico:"), magneticoCheckBox
         });
+
 
         JTextField tipoProdottoField = new JTextField();
         JTextField polliciField = new JTextField();
@@ -177,12 +195,14 @@ public class Inserimento extends JPanel {
                 new JLabel("Wireless:"), wirelessCheckBox
         });
 
+
         JTextField quantitaField = new JTextField();
         JTextField unitaMisuraField = new JTextField();
         specificFieldsMap.put("Consumabili", new JComponent[]{
                 new JLabel("Quantità:"), quantitaField,
                 new JLabel("Unità di Misura:"), unitaMisuraField
         });
+
 
         JTextField tecnologiaField = new JTextField();
         JTextField velocitaStampaField = new JTextField();
@@ -195,6 +215,7 @@ public class Inserimento extends JPanel {
                 new JLabel("WiFi Integrato:"), wifiIntegratoCheckBox
         });
 
+
         JTextField tipoConnettoriField = new JTextField();
         JTextField lunghezzaField = new JTextField();
         JCheckBox supporta4KCheckBox = new JCheckBox();
@@ -205,6 +226,7 @@ public class Inserimento extends JPanel {
                 new JLabel("Supporta 4K:"), supporta4KCheckBox,
                 new JLabel("Rinforzato:"), rinforzatoCheckBox
         });
+
 
         JTextField dimensioneDisplayField = new JTextField();
         JTextField risoluzioneField = new JTextField();
@@ -247,6 +269,7 @@ public class Inserimento extends JPanel {
         descrizione.setText("");
         urlImage.setText("");
         iconaSelezionata = null;
+
 
         for (JComponent[] components : specificFieldsMap.values()) {
             for (JComponent component : components) {

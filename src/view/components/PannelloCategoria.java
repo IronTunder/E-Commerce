@@ -30,10 +30,12 @@ public class PannelloCategoria extends JPanel{
         setBackground(new Color(240, 240, 240));
         setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
+
         JLabel titolo = new JLabel(titoloCategoria);
         titolo.setFont(new Font("Arial", Font.BOLD, 18));
         titolo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         add(titolo, BorderLayout.NORTH);
+
 
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(new Color(240, 240, 240));
@@ -42,6 +44,7 @@ public class PannelloCategoria extends JPanel{
         prodottiPanel.setLayout(new BoxLayout(prodottiPanel, BoxLayout.X_AXIS));
         prodottiPanel.setBackground(new Color(240, 240, 240));
 
+
         int maxProdotti = Math.min(prodotti.size(), 10);
         for (int i = 0; i < maxProdotti; i++) {
             JPanel prodottoCard = creaProdottoCard(prodotti.get(i));
@@ -49,9 +52,11 @@ public class PannelloCategoria extends JPanel{
             prodottiPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         }
 
+
         prodottiPanel.add(Box.createHorizontalGlue());
 
         wrapper.add(prodottiPanel, BorderLayout.CENTER);
+
 
         JScrollPane scrollPane = new JScrollPane(wrapper);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -59,7 +64,9 @@ public class PannelloCategoria extends JPanel{
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
+
         scrollPane.setPreferredSize(new Dimension(800, 300));
+
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -123,14 +130,17 @@ public class PannelloCategoria extends JPanel{
             }
         }).start();
 
+
         JLabel nomeLabel = new JLabel(prodotto.getNome());
         JLabel prezzoLabel = new JLabel("€ " + String.format("%.2f", prodotto.getPrezzo()), SwingConstants.RIGHT);
         nomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setForeground(new Color(0, 100, 0));
 
+
         JPanel attributiPanel = new JPanel();
         attributiPanel.setLayout(new BoxLayout(attributiPanel, BoxLayout.Y_AXIS));
+
 
         switch(prodotto.getCategoria()) {
             case "ComponentiPC":

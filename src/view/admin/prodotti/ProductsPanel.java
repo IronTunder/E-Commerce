@@ -17,6 +17,7 @@ public class ProductsPanel extends JFrame {
         setSize(900, 720);
         setLocationRelativeTo(this);
 
+
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(new Color(240, 240, 240));
@@ -26,14 +27,17 @@ public class ProductsPanel extends JFrame {
         ElencoMagazzino elencoMagazzino = new ElencoMagazzino(productsController.getProdotti());
         BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino, homePage);
 
+
         inserimento.setBackground(new Color(240, 240, 240));
         elencoMagazzino.setBackground(new Color(240, 240, 240));
         bottoniInserimento.setBackground(new Color(240, 240, 240));
+
 
         JScrollPane scrollPane = new JScrollPane(elencoMagazzino.getTextArea());
         scrollPane.setBorder(BorderFactory.createTitledBorder("Elenco Prodotti"));
         elencoMagazzino.remove(elencoMagazzino.getTextArea());
         elencoMagazzino.add(scrollPane);
+
 
         JPanel northPanel = new JPanel(new BorderLayout());
         northPanel.add(new JLabel("Inserimento Prodotti", JLabel.CENTER), BorderLayout.NORTH);
