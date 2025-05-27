@@ -18,28 +18,28 @@ public class Registrazione extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Campi registrazione
+
         addField(gbc, 0, "Email:", emailField);
         addField(gbc, 1, "Username:", usernameField);
         addField(gbc, 2, "Password:", passwordField);
         addField(gbc, 3, "Conferma Password:", confirmPasswordField);
 
-        // Checkbox termini
+
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 2;
         add(termsCheckbox, gbc);
 
-        // Pannello amministratore
+
         gbc.gridx = 0; gbc.gridy = 5;
         gbc.gridwidth = 2;
         JPanel adminPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         adminPanel.add(adminCheckbox);
         adminPanel.add(new JLabel("Parola di sicurezza:"));
         adminPanel.add(adminPasswordField);
-        adminPasswordField.setEnabled(false); // Disabilitato inizialmente
+        adminPasswordField.setEnabled(false);
         add(adminPanel, gbc);
 
-        // Listener per abilitare/disabilitare il campo password amministratore
+
         adminCheckbox.addActionListener(e -> {
             adminPasswordField.setEnabled(adminCheckbox.isSelected());
             if (!adminCheckbox.isSelected()) {

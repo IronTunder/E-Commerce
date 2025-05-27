@@ -44,7 +44,7 @@ public class HomePage extends JFrame implements ActionListener {
                 "ComputerDesktop", "Consumabili", "NotebookeAccessori",
                 "UsatoGarantito"
         };
-        productsController.caricaProdotti(); // Carica i prodotti all'avvio
+        productsController.caricaProdotti();
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
             for (Prodotto p : productsController.getProdotti()) {
@@ -82,7 +82,7 @@ public class HomePage extends JFrame implements ActionListener {
         boolean resizable = isResizable();
         getContentPane().removeAll();
 
-        // Ricrea l'UI (stesso codice del costruttore)
+
         setLayout(new BorderLayout());
         PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
@@ -154,7 +154,7 @@ public class HomePage extends JFrame implements ActionListener {
         leftPanel.setBackground(new Color(50, 50, 50));
         if (authController.isLoggedIn()) {
             if (authController.getLogin().isAdmininstrator()) {
-                // Bottone Admin Panel
+
                 JButton adminButton = creaBottone("PRODOTTI", "Pannello di amministrazione");
                 adminButton.setActionCommand("AdminPanel");
                 adminButton.setBackground(new Color(200, 0, 0));
@@ -162,10 +162,10 @@ public class HomePage extends JFrame implements ActionListener {
                 adminButton.addActionListener(this);
                 leftPanel.add(adminButton);
 
-                // Nuovo bottone Gestione Ordini
+
                 JButton ordersButton = creaBottone("ORDINI", "Gestisci gli ordini");
                 ordersButton.setActionCommand("OrderManagement");
-                ordersButton.setBackground(new Color(0, 100, 200)); // Blu
+                ordersButton.setBackground(new Color(0, 100, 200));
                 ordersButton.setForeground(Color.WHITE);
                 ordersButton.addActionListener(new ActionListener() {
                     @Override
@@ -187,7 +187,7 @@ public class HomePage extends JFrame implements ActionListener {
         }
         menuBar.add(leftPanel, BorderLayout.WEST);
 
-        // Pannello centrale (carrello)
+
         JPanel centerPanel = creaPannelloMenu(FlowLayout.CENTER,
                 creaBottone("Carrello", "Clicca per visualizzare il carrello"));
         menuBar.add(centerPanel, BorderLayout.CENTER);
@@ -246,14 +246,14 @@ public class HomePage extends JFrame implements ActionListener {
     public void mostraProdotto(Prodotto prodotto) {
         getContentPane().removeAll();
 
-        // Mantieni il pannello laterale
+
         PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
 
-        // Crea uno JScrollPane che conterrà il ProdottoPanel
+
         JScrollPane scrollPane = new JScrollPane(new ProdottoPanel(this, prodotto));
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Aggiungi questa linea
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         add(scrollPane, BorderLayout.CENTER);
@@ -265,7 +265,7 @@ public class HomePage extends JFrame implements ActionListener {
     public void mostraHomePage() {
         getContentPane().removeAll();
 
-        // Ricrea l'interfaccia originale
+
         PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
 
@@ -316,7 +316,7 @@ public class HomePage extends JFrame implements ActionListener {
     public void mostraCategoria(String categoria) {
         getContentPane().removeAll();
 
-        // Mantieni il pannello laterale
+
         PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
 
@@ -324,7 +324,7 @@ public class HomePage extends JFrame implements ActionListener {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(240, 240, 240));
 
-        // Carica solo i prodotti della categoria selezionata
+
         ArrayList<Prodotto> prodotti = new ArrayList<>();
         for (Prodotto p : productsController.getProdotti()) {
             if(p.getCategoria().equals(categoria)) {

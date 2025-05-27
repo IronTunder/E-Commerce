@@ -8,14 +8,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
+public class ProdottoPanel extends JPanel {
     private final HomePage homePage;
     private final Prodotto prodotto;
 
     public ProdottoPanel(HomePage homePage, Prodotto prodotto) {
         this.homePage = homePage;
         this.prodotto = prodotto;
-        setLayout(new BorderLayout());  // Layout principale BorderLayout
+        setLayout(new BorderLayout());
         initUI();
     }
 
@@ -24,7 +24,7 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(new Color(240, 240, 240));
 
-        // Pannello superiore con pulsante indietro
+
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(new Color(240, 240, 240));
 
@@ -35,12 +35,12 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
 
         add(topPanel, BorderLayout.NORTH);
 
-        // Pannello principale con i dettagli del prodotto
+
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Pannello sinistro con l'immagine
+
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(Color.WHITE);
         imagePanel.setPreferredSize(new Dimension(400, 400));
@@ -48,7 +48,7 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
         JLabel imageLabel = new JLabel("Caricamento immagine...", JLabel.CENTER);
         imageLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        // Carica l'immagine in un thread separato
+
         new Thread(() -> {
             try {
                 ImageIcon originalIcon = new ImageIcon(new URL(prodotto.getUrlImage()));
@@ -70,22 +70,22 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
         imagePanel.add(imageLabel, BorderLayout.CENTER);
         mainPanel.add(imagePanel, BorderLayout.WEST);
 
-        // Pannello destro con i dettagli
+
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBackground(Color.WHITE);
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        detailsPanel.setMaximumSize(new Dimension(400, Integer.MAX_VALUE)); // Aggiungi questa linea
+        detailsPanel.setMaximumSize(new Dimension(400, Integer.MAX_VALUE));
 
 
-        // Nome prodotto
+
         JLabel nameLabel = new JLabel(prodotto.getNome());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
         nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         detailsPanel.add(nameLabel);
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // Prezzo
+
         JLabel priceLabel = new JLabel(String.format("Prezzo: €%.2f", prodotto.getPrezzo()));
         priceLabel.setFont(new Font("Arial", Font.BOLD, 20));
         priceLabel.setForeground(new Color(200, 0, 0));
@@ -93,14 +93,14 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
         detailsPanel.add(priceLabel);
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Categoria
+
         JLabel categoryLabel = new JLabel("Categoria: " + prodotto.getCategoria());
         categoryLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         categoryLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         detailsPanel.add(categoryLabel);
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Descrizione
+
         JTextArea descriptionArea = new JTextArea(prodotto.getDescrizione());
         descriptionArea.setFont(new Font("Arial", Font.PLAIN, 14));
         descriptionArea.setLineWrap(true);
@@ -120,7 +120,7 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
         attributiPanel.setBackground(Color.WHITE);
         attributiPanel.setBorder(BorderFactory.createTitledBorder("Specifiche Tecniche"));
 
-// Aggiungi attributi in base alla categoria
+
         switch(prodotto.getCategoria()) {
             case "ComponentiPC":
                 if(prodotto instanceof ComponentiPC) {
@@ -232,14 +232,14 @@ public class ProdottoPanel extends JPanel {  // Cambiato da JScrollPane a JPanel
                 break;
         }
 
-// Aggiungi il pannello degli attributi dopo la descrizione
+
         detailsPanel.add(attributiPanel);
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-// Pulsante Aggiungi al carrello (con colore arancione come nella homepage)
+
         JButton addToCartButton = new JButton("Aggiungi al carrello");
         addToCartButton.setFont(new Font("Arial", Font.BOLD, 16));
-        addToCartButton.setBackground(new Color(255, 153, 0)); // Colore arancione
+        addToCartButton.setBackground(new Color(255, 153, 0));
         addToCartButton.setForeground(Color.WHITE);
         addToCartButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         addToCartButton.setPreferredSize(new Dimension(200, 40));
