@@ -5,6 +5,8 @@ import src.view.HomePage;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PannelloLaterale extends JPanel {
     private final String[] categories = {
@@ -22,7 +24,7 @@ public class PannelloLaterale extends JPanel {
         setBackground(new Color(50, 50, 50));
         setPreferredSize(new Dimension(215, 400));
 
-        // Titolo "Categorie"
+
         JLabel titleLabel = new JLabel("Categorie");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         titleLabel.setForeground(Color.WHITE);
@@ -30,7 +32,7 @@ public class PannelloLaterale extends JPanel {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Lista delle categorie
+
         JList<String> categoryList = creaListaCategoria();
         JScrollPane scroller = new JScrollPane(categoryList);
         scroller.setBorder(BorderFactory.createEmptyBorder());
@@ -54,12 +56,12 @@ public class PannelloLaterale extends JPanel {
         }
 
         JList<String> categoryList = new JList<>(model);
-        confLista(categoryList); // Configura bordi e colori
+        confLista(categoryList);
 
-        // Altezza fissa per ogni elemento + spaziatura
-        categoryList.setFixedCellHeight(35); // Più alto per dare spazio
 
-        // Personalizzazione della grafica degli elementi
+        categoryList.setFixedCellHeight(35);
+
+
         categoryList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(
@@ -70,7 +72,7 @@ public class PannelloLaterale extends JPanel {
                         list, value, index, isSelected, cellHasFocus
                 );
 
-                // Stile normale
+
                 label.setBackground(new Color(50, 50, 50));
                 label.setForeground(Color.WHITE);
                 label.setBorder(BorderFactory.createCompoundBorder(
@@ -80,7 +82,7 @@ public class PannelloLaterale extends JPanel {
                         BorderFactory.createEmptyBorder(5, 0, 5, 0)
                 ));
 
-                // Stile quando selezionato
+
                 if (isSelected) {
                     label.setBackground(Color.WHITE);
                     label.setForeground(Color.BLACK);
@@ -103,7 +105,7 @@ public class PannelloLaterale extends JPanel {
     private void confLista(JList<String> list) {
         list.setFont(new Font("Arial", Font.PLAIN, 14));
         list.setBackground(new Color(50, 50, 50));
-        list.setSelectionBackground(new Color(70, 130, 180)); // Colore di selezione
+        list.setSelectionBackground(new Color(70, 130, 180));
         list.setSelectionForeground(Color.WHITE);
         list.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createBevelBorder(BevelBorder.LOWERED,
@@ -124,11 +126,19 @@ public class PannelloLaterale extends JPanel {
             JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
             logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+            logoLabel.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    homePage.mostraHomePage();
+                }
+            });
+
             JPanel logoPanel = new JPanel(new BorderLayout());
             logoPanel.setBackground(new Color(50, 50, 50));
             logoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
             logoPanel.add(logoLabel, BorderLayout.CENTER);
             add(logoPanel, BorderLayout.SOUTH);
+
+
         } catch (Exception e) {
             System.err.println("Errore nel caricamento del logo: " + e.getMessage());
         }

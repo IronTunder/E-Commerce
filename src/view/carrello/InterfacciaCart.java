@@ -37,7 +37,7 @@ public class InterfacciaCart extends JFrame {
         this.authController = homePage.getAuthController();
         this.ordersController = homePage.getOrdersController();
         setTitle("Carrello - " + authController.getLogin().getUsername());
-        setSize(900, 700); // Aumentato le dimensioni per il pannello di spedizione
+        setSize(900, 700);
         setLocationRelativeTo(homePage);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setIconImage(homePage.getIconImage());
@@ -62,14 +62,11 @@ public class InterfacciaCart extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
-        // Verifica e gestione indirizzo
         if (!checkAndRequestAddress()) {
-            // Se non c'è indirizzo, mostra solo un messaggio e disabilita tutto
             showNoAddressMessage();
             return;
         }
 
-        // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
         JLabel titleLabel = new JLabel("Il tuo carrello");
@@ -78,7 +75,6 @@ public class InterfacciaCart extends JFrame {
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
 
-        // Cart items panel (scrollable)
         JPanel itemsPanel = new JPanel();
         itemsPanel.setLayout(new BoxLayout(itemsPanel, BoxLayout.Y_AXIS));
         itemsPanel.setBackground(new Color(248, 248, 248));
@@ -89,7 +85,6 @@ public class InterfacciaCart extends JFrame {
         itemsScrollPane.getViewport().setBackground(new Color(248, 248, 248));
         mainPanel.add(itemsScrollPane, BorderLayout.CENTER);
 
-        // Bottom panel with total, shipping and buttons
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(new Color(248, 248, 248));
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -97,23 +92,18 @@ public class InterfacciaCart extends JFrame {
                 BorderFactory.createEmptyBorder(15, 0, 0, 0)
         ));
 
-        // Shipping and total panel
         JPanel shippingTotalPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         shippingTotalPanel.setBackground(new Color(248, 248, 248));
 
-        // Shipping address panel
         JPanel shippingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         shippingPanel.setBackground(new Color(248, 248, 248));
         JLabel shippingLabel = new JLabel("Indirizzo di spedizione:");
         shippingLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        // Get user's addresses or use default
-        // Verifica che authController e getLogin() non siano null
         if (authController != null && authController.getLogin() != null) {
-            // Inizializza la lista degli indirizzi, assicurandoti che non sia null
             List<String> indirizzi = authController.getLogin().getIndirizzi();
             if (indirizzi == null) {
-                indirizzi = new ArrayList<>(); // Inizializza se null
+                indirizzi = new ArrayList<>();
             }
 
             if (indirizzi.isEmpty()) {
@@ -141,12 +131,10 @@ public class InterfacciaCart extends JFrame {
                 });
             }
 
-            // Crea il JComboBox con l'array degli indirizzi
             indirizzoSpedizioneComboBox = new JComboBox<>(indirizzi.toArray(new String[0]));
             indirizzoSpedizioneComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
             indirizzoSpedizioneComboBox.setPreferredSize(new Dimension(300, 25));
         } else {
-            // Gestisci il caso in cui authController o getLogin() siano null
             indirizzoSpedizioneComboBox = new JComboBox<>();
             System.err.println("Errore: authController o login non disponibili");
         }
@@ -154,7 +142,6 @@ public class InterfacciaCart extends JFrame {
         shippingPanel.add(indirizzoSpedizioneComboBox);
         shippingTotalPanel.add(shippingPanel);
 
-        // Total label
         totalLabel = new JLabel("Totale: ", JLabel.RIGHT);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalLabel.setForeground(new Color(70, 70, 70));
@@ -162,7 +149,6 @@ public class InterfacciaCart extends JFrame {
 
         bottomPanel.add(shippingTotalPanel, BorderLayout.NORTH);
 
-        // Buttons panel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         buttonsPanel.setBackground(new Color(248, 248, 248));
 
@@ -208,19 +194,15 @@ public class InterfacciaCart extends JFrame {
         JDialog addressDialog = createAddressDialog();
         final boolean[] addressProvided = {false};
 
-        // Blocca la finestra principale
         this.setEnabled(false);
 
-        // Mostra il dialog e aspetta che venga chiuso
         addressDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 InterfacciaCart.this.setEnabled(true);
                 if (!addressProvided[0]) {
-                    // Se l'utente chiude senza inserire l'indirizzo
                     showNoAddressMessage();
                 } else {
-                    // Ricarica l'UI con l'indirizzo ora disponibile
                     mainPanel.removeAll();
                     initUI();
                     revalidate();
@@ -240,17 +222,14 @@ public class InterfacciaCart extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setResizable(false);
 
-        // Icona
         if (getIconImage() != null) {
             dialog.setIconImage(getIconImage());
         }
 
-        // Pannello principale
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
-        // Messaggio
         JLabel messageLabel = new JLabel(
                 "<html><div style='text-align: center;'>"
                         + "Per procedere con l'acquisto, è necessario inserire un indirizzo di spedizione.<br><br>"
@@ -260,7 +239,6 @@ public class InterfacciaCart extends JFrame {
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(messageLabel, BorderLayout.NORTH);
 
-        // Campo indirizzo
         JPanel addressPanel = new JPanel(new BorderLayout());
         addressPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
         JLabel addressLabel = new JLabel("Indirizzo completo:");
@@ -273,7 +251,6 @@ public class InterfacciaCart extends JFrame {
         addressPanel.add(addressField, BorderLayout.CENTER);
         mainPanel.add(addressPanel, BorderLayout.CENTER);
 
-        // Pulsanti
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
@@ -286,14 +263,12 @@ public class InterfacciaCart extends JFrame {
         saveButton.addActionListener(e -> {
             String address = addressField.getText().trim();
             if (!address.isEmpty()) {
-                // Aggiungi l'indirizzo
                 if (authController.getLogin().getIndirizzi() == null) {
                     authController.getLogin().setIndirizzi(new ArrayList<>());
                 }
                 authController.getLogin().getIndirizzi().add(address);
                 updateUserProfile();
 
-                // Imposta che l'indirizzo è stato fornito
                 SwingUtilities.invokeLater(() -> {
                     dialog.dispose();
                 });
@@ -391,7 +366,6 @@ public class InterfacciaCart extends JFrame {
         itemPanel.setBackground(Color.WHITE);
         itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
-        // Image panel
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(Color.WHITE);
         imagePanel.setPreferredSize(new Dimension(IMG_WIDTH, IMG_HEIGHT));
@@ -418,7 +392,6 @@ public class InterfacciaCart extends JFrame {
         }).start();
         imagePanel.add(imgLabel);
 
-        // Product info panel
         JPanel infoPanel = new JPanel(new BorderLayout(5, 10));
         infoPanel.setBackground(Color.WHITE);
 
@@ -437,7 +410,6 @@ public class InterfacciaCart extends JFrame {
         infoPanel.add(priceLabel, BorderLayout.CENTER);
         infoPanel.add(totalLabel, BorderLayout.SOUTH);
 
-        // Quantity control panel
         JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         quantityPanel.setBackground(Color.WHITE);
 
@@ -467,7 +439,6 @@ public class InterfacciaCart extends JFrame {
         quantityPanel.add(quantityLabel);
         quantityPanel.add(increaseButton);
 
-        // Remove button
         JButton removeButton = new JButton("Rimuovi");
         removeButton.setFont(new Font("Arial", Font.PLAIN, 12));
         removeButton.setForeground(Color.RED);
@@ -477,7 +448,6 @@ public class InterfacciaCart extends JFrame {
             cartModified = true;
         });
 
-        // Control panel (quantity + remove)
         JPanel controlPanel = new JPanel(new BorderLayout(10, 10));
         controlPanel.setBackground(Color.WHITE);
 
@@ -488,7 +458,6 @@ public class InterfacciaCart extends JFrame {
 
         controlPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Main content panel
         JPanel contentPanel = new JPanel(new BorderLayout(15, 0));
         contentPanel.setBackground(Color.WHITE);
         contentPanel.add(imagePanel, BorderLayout.WEST);
@@ -537,7 +506,6 @@ public class InterfacciaCart extends JFrame {
             return;
         }
 
-        // Verifica che sia selezionato un indirizzo valido
         if (indirizzoSpedizioneComboBox.getSelectedItem() == null ||
                 indirizzoSpedizioneComboBox.getSelectedItem().equals("Nessun indirizzo disponibile")) {
             JOptionPane.showMessageDialog(this,
@@ -563,10 +531,8 @@ public class InterfacciaCart extends JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
         if (option == JOptionPane.YES_OPTION) {
-            // Crea una copia del carrello per l'ordine
             List<Prodotto> prodottiOrdinati = new ArrayList<>(currentUser.getCarrello());
 
-            // Crea il nuovo ordine
             Ordine nuovoOrdine = new Ordine(
                     currentUser,
                     ordersController.getOrdini().size() + 1,
@@ -577,10 +543,8 @@ public class InterfacciaCart extends JFrame {
                     "Da spedire"
             );
 
-            // Aggiungi l'ordine al controller
             ordersController.aggiungiOrdine(nuovoOrdine);
             ordersController.salvaOrdini();
-            // Svuota il carrello
             currentUser.setCarrello(new ArrayList<>());
             cartModified = true;
             updateUserProfile();

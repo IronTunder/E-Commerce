@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Inserimento extends JPanel {
-    // Campi comuni a tutti i prodotti
+
     private final JTextField nome = new JTextField();
     private final JTextField id = new JTextField();
     private final JTextField marca = new JTextField();
@@ -24,19 +24,15 @@ public class Inserimento extends JPanel {
     private ImageIcon iconaSelezionata;
     private final JTextArea descrizione = new JTextArea();
 
-    // ComboBox per la selezione della categoria
     private final JComboBox<String> categoriaComboBox = new JComboBox<>();
 
-    // Pannello per i campi specifici della categoria
     private final JPanel specificFieldsPanel = new JPanel();
 
-    // Mappa per memorizzare i campi specifici di ogni categoria
     private final Map<String, JComponent[]> specificFieldsMap = new HashMap<>();
 
     public Inserimento() {
         setLayout(new BorderLayout(10, 10));
 
-        // Pannello per i campi comuni
         JPanel commonFieldsPanel = new JPanel(new GridLayout(8, 2, 10, 10));
         JScrollPane descriptionScrollPane = new JScrollPane(descrizione);
         descriptionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -44,10 +40,8 @@ public class Inserimento extends JPanel {
         descrizione.setLineWrap(true);
         descrizione.setWrapStyleWord(true);
 
-        // Inizializza la ComboBox con le categorie disponibili
         initializeCategories();
 
-        // Aggiungi i componenti al pannello dei campi comuni
         commonFieldsPanel.add(new JLabel("Categoria:"));
         commonFieldsPanel.add(categoriaComboBox);
         commonFieldsPanel.add(new JLabel("Nome:"));
@@ -65,7 +59,6 @@ public class Inserimento extends JPanel {
         commonFieldsPanel.add(new JLabel(""));
         commonFieldsPanel.add(verificaImmagine);
 
-        // Configura il listener per la ComboBox
         categoriaComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +66,6 @@ public class Inserimento extends JPanel {
             }
         });
 
-        // Pannello per il pulsante di selezione immagine
         verificaImmagine.addActionListener(e -> {
             try {
                 String imageUrl = urlImage.getText();
@@ -89,16 +81,13 @@ public class Inserimento extends JPanel {
             }
         });
 
-        // Aggiungi i pannelli al layout principale
         add(commonFieldsPanel, BorderLayout.NORTH);
         add(new JScrollPane(specificFieldsPanel), BorderLayout.CENTER);
 
-        // Aggiorna i campi specifici iniziali
         updateSpecificFields();
     }
 
     private void initializeCategories() {
-        // Aggiungi tutte le categorie disponibili
         categoriaComboBox.addItem("ComputerDesktop");
         categoriaComboBox.addItem("AccessoriPC");
         categoriaComboBox.addItem("ComponentiPC");
@@ -110,12 +99,10 @@ public class Inserimento extends JPanel {
         categoriaComboBox.addItem("Cavetteria");
         categoriaComboBox.addItem("NotebookEAccessori");
 
-        // Inizializza i campi specifici per ogni categoria
         initializeSpecificFields();
     }
 
     private void initializeSpecificFields() {
-        // ComputerDesktop
         JTextField cpuField = new JTextField();
         JTextField gpuField = new JTextField();
         JTextField ramField = new JTextField();
@@ -129,7 +116,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Sistema Operativo:"), soField
         });
 
-        // AccessoriPC
         JTextField tipoAccessorioField = new JTextField();
         JTextField connettivitaField = new JTextField();
         JCheckBox rgbCheckBox = new JCheckBox();
@@ -145,7 +131,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Ergonomico:"), ergonomicoCheckBox
         });
 
-        // ComponentiPC
         JTextField tipoComponenteField = new JTextField();
         JTextField specificaTecnicaField = new JTextField();
         JTextField capacitaGBField = new JTextField();
@@ -157,7 +142,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Compatibilità:"), compatibilita2Field
         });
 
-        // UsatoGarantito
         JTextField statoUsuraField = new JTextField();
         JTextField annoProduzioneField = new JTextField();
         JTextField mesiGaranziaField = new JTextField();
@@ -169,7 +153,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Accessori Originali:"), accessoriOriginaliCheckBox
         });
 
-        // AccessoriSmartPhone
         JTextField tipoMaterialeField = new JTextField();
         JTextField capacitaPowerBankField = new JTextField();
         JCheckBox ricaricaWirelessCheckBox = new JCheckBox();
@@ -181,7 +164,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Magnetico:"), magneticoCheckBox
         });
 
-        // AudioVideoGaming
         JTextField tipoProdottoField = new JTextField();
         JTextField polliciField = new JTextField();
         JTextField hzField = new JTextField();
@@ -195,7 +177,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Wireless:"), wirelessCheckBox
         });
 
-        // Consumabili
         JTextField quantitaField = new JTextField();
         JTextField unitaMisuraField = new JTextField();
         specificFieldsMap.put("Consumabili", new JComponent[]{
@@ -203,7 +184,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Unità di Misura:"), unitaMisuraField
         });
 
-        // CasaEUfficio
         JTextField tecnologiaField = new JTextField();
         JTextField velocitaStampaField = new JTextField();
         JCheckBox fronteRetroCheckBox = new JCheckBox();
@@ -215,7 +195,6 @@ public class Inserimento extends JPanel {
                 new JLabel("WiFi Integrato:"), wifiIntegratoCheckBox
         });
 
-        // Cavetteria
         JTextField tipoConnettoriField = new JTextField();
         JTextField lunghezzaField = new JTextField();
         JCheckBox supporta4KCheckBox = new JCheckBox();
@@ -227,7 +206,6 @@ public class Inserimento extends JPanel {
                 new JLabel("Rinforzato:"), rinforzatoCheckBox
         });
 
-        // NotebookEAccessori
         JTextField dimensioneDisplayField = new JTextField();
         JTextField risoluzioneField = new JTextField();
         JCheckBox touchscreenCheckBox = new JCheckBox();
@@ -270,7 +248,6 @@ public class Inserimento extends JPanel {
         urlImage.setText("");
         iconaSelezionata = null;
 
-        // Resetta tutti i campi specifici
         for (JComponent[] components : specificFieldsMap.values()) {
             for (JComponent component : components) {
                 if (component instanceof JTextField) {
@@ -291,104 +268,104 @@ public class Inserimento extends JPanel {
                     return new ComputerDesktop(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // CPU
-                            ((JTextField) fields[3]).getText(),  // GPU
-                            Integer.parseInt(((JTextField) fields[5]).getText()),  // RAM
-                            Integer.parseInt(((JTextField) fields[7]).getText()),  // Memoria
-                            ((JTextField) fields[9]).getText()   // SO
+                            ((JTextField) fields[1]).getText(),
+                            ((JTextField) fields[3]).getText(),
+                            Integer.parseInt(((JTextField) fields[5]).getText()),
+                            Integer.parseInt(((JTextField) fields[7]).getText()),
+                            ((JTextField) fields[9]).getText()
                     );
 
                 case "AccessoriPC":
                     return new AccessoriPC(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tipo Accessorio
-                            ((JTextField) fields[3]).getText(),  // Connettività
-                            ((JCheckBox) fields[5]).isSelected(),  // RGB
-                            ((JTextField) fields[7]).getText(),  // Compatibilità
-                            ((JTextField) fields[9]).getText(),  // Dimensioni
-                            ((JCheckBox) fields[11]).isSelected()  // Ergonomico
+                            ((JTextField) fields[1]).getText(),
+                            ((JTextField) fields[3]).getText(),
+                            ((JCheckBox) fields[5]).isSelected(),
+                            ((JTextField) fields[7]).getText(),
+                            ((JTextField) fields[9]).getText(),
+                            ((JCheckBox) fields[11]).isSelected()
                     );
 
                 case "ComponentiPC":
                     return new ComponentiPC(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tipo Componente
-                            ((JTextField) fields[3]).getText(),  // Specifica Tecnica
-                            Integer.parseInt(((JTextField) fields[5]).getText()),  // Capacità GB
-                            ((JTextField) fields[7]).getText()   // Compatibilità
+                            ((JTextField) fields[1]).getText(),
+                            ((JTextField) fields[3]).getText(),
+                            Integer.parseInt(((JTextField) fields[5]).getText()),
+                            ((JTextField) fields[7]).getText()
                     );
 
                 case "UsatoGarantito":
                     return new UsatoGarantito(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Stato Usura
-                            Integer.parseInt(((JTextField) fields[3]).getText()),  // Anno Produzione
-                            Integer.parseInt(((JTextField) fields[5]).getText()),  // Mesi Garanzia
-                            ((JCheckBox) fields[7]).isSelected()  // Accessori Originali
+                            ((JTextField) fields[1]).getText(),
+                            Integer.parseInt(((JTextField) fields[3]).getText()),
+                            Integer.parseInt(((JTextField) fields[5]).getText()),
+                            ((JCheckBox) fields[7]).isSelected()
                     );
 
                 case "AccessoriSmartPhone":
                     return new AccessoriSmartPhone(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tipo Materiale
-                            Integer.parseInt(((JTextField) fields[3]).getText()),  // Capacità PowerBank
-                            ((JCheckBox) fields[5]).isSelected(),  // Ricarica Wireless
-                            ((JCheckBox) fields[7]).isSelected()  // Magnetico
+                            ((JTextField) fields[1]).getText(),
+                            Integer.parseInt(((JTextField) fields[3]).getText()),
+                            ((JCheckBox) fields[5]).isSelected(),
+                            ((JCheckBox) fields[7]).isSelected()
                     );
 
                 case "AudioVideoGaming":
                     return new AudioVideoGaming(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tipo Prodotto
-                            Integer.parseInt(((JTextField) fields[3]).getText()),  // Pollici
-                            Integer.parseInt(((JTextField) fields[5]).getText()),  // Hz
-                            ((JCheckBox) fields[7]).isSelected(),  // Supporta HDR
-                            ((JCheckBox) fields[9]).isSelected()  // Wireless
+                            ((JTextField) fields[1]).getText(),
+                            Integer.parseInt(((JTextField) fields[3]).getText()),
+                            Integer.parseInt(((JTextField) fields[5]).getText()),
+                            ((JCheckBox) fields[7]).isSelected(),
+                            ((JCheckBox) fields[9]).isSelected()
                     );
 
                 case "Consumabili":
                     return new Consumabili(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            Double.parseDouble(((JTextField) fields[1]).getText()),  // Quantità
-                            ((JTextField) fields[3]).getText()  // Unità di Misura
+                            Double.parseDouble(((JTextField) fields[1]).getText()),
+                            ((JTextField) fields[3]).getText()
                     );
 
                 case "CasaEUfficio":
                     return new CasaEUfficio(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tecnologia
-                            Integer.parseInt(((JTextField) fields[3]).getText()),  // Velocità Stampa
-                            ((JCheckBox) fields[5]).isSelected(),  // Fronte/Retro
-                            ((JCheckBox) fields[7]).isSelected()  // WiFi Integrato
+                            ((JTextField) fields[1]).getText(),
+                            Integer.parseInt(((JTextField) fields[3]).getText()),
+                            ((JCheckBox) fields[5]).isSelected(),
+                            ((JCheckBox) fields[7]).isSelected()
                     );
 
                 case "Cavetteria":
                     return new Cavetteria(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            ((JTextField) fields[1]).getText(),  // Tipo Connettori
-                            Double.parseDouble(((JTextField) fields[3]).getText()),  // Lunghezza
-                            ((JCheckBox) fields[5]).isSelected(),  // Supporta 4K
-                            ((JCheckBox) fields[7]).isSelected()  // Rinforzato
+                            ((JTextField) fields[1]).getText(),
+                            Double.parseDouble(((JTextField) fields[3]).getText()),
+                            ((JCheckBox) fields[5]).isSelected(),
+                            ((JCheckBox) fields[7]).isSelected()
                     );
 
                 case "NotebookEAccessori":
                     return new NotebookEAccessori(
                             nome.getText(), id.getText(), marca.getText(), selectedCategory,
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
-                            Double.parseDouble(((JTextField) fields[1]).getText()),  // Dimensione Display
-                            ((JTextField) fields[3]).getText(),  // Risoluzione
-                            ((JCheckBox) fields[5]).isSelected(),  // Touchscreen
-                            Integer.parseInt(((JTextField) fields[7]).getText()),  // Autonomia
-                            ((JTextField) fields[9]).getText(),  // CPU
-                            Integer.parseInt(((JTextField) fields[11]).getText())  // RAM
+                            Double.parseDouble(((JTextField) fields[1]).getText()),
+                            ((JTextField) fields[3]).getText(),
+                            ((JCheckBox) fields[5]).isSelected(),
+                            Integer.parseInt(((JTextField) fields[7]).getText()),
+                            ((JTextField) fields[9]).getText(),
+                            Integer.parseInt(((JTextField) fields[11]).getText())
                     );
 
                 default:

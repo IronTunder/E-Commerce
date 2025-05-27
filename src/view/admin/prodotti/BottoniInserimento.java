@@ -26,10 +26,10 @@ public class BottoniInserimento extends JPanel implements ActionListener {
         this.productsController = homePage.getFileManager();
         this.homePage = homePage;
         setLayout(new FlowLayout());
-        styleButton(aggiungi, new Color(46, 125, 50)); // Verde
-        styleButton(salva, new Color(41, 98, 255));    // Blu
-        styleButton(carica, new Color(158, 158, 158)); // Grigio
-        styleButton(rimuovi, new Color(198, 40, 40));  // Rosso
+        styleButton(aggiungi, new Color(46, 125, 50));
+        styleButton(salva, new Color(41, 98, 255));
+        styleButton(carica, new Color(158, 158, 158));
+        styleButton(rimuovi, new Color(198, 40, 40));
         setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         add(aggiungi);
         aggiungi.addActionListener(this);
@@ -98,8 +98,8 @@ public class BottoniInserimento extends JPanel implements ActionListener {
         }
 
         if (rimosso) {
-            productsController.salvaProdotti(); // Salva lo stato aggiornato nel file
-            aggiornaInterfaccia(); // Aggiorna la UI
+            productsController.salvaProdotti();
+            aggiornaInterfaccia();
             JOptionPane.showMessageDialog(null, "Prodotto rimosso con successo!");
         } else {
             JOptionPane.showMessageDialog(null, "Nessun prodotto trovato con l'ID specificato!");
@@ -108,13 +108,12 @@ public class BottoniInserimento extends JPanel implements ActionListener {
 
 
     private void aggiornaInterfaccia() {
-        // Aggiorna l'elenco magazzino
+
         elencoMagazzino.textArea.setText("");
         for(Prodotto p : productsController.getProdotti()) {
             elencoMagazzino.textArea.append(p.toString() + "\n");
         }
 
-        // Aggiorna la homepage
         homePage.aggiornaVisualizzazioneProdotti();
     }
 }

@@ -14,7 +14,6 @@ public class Login extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Etichette e campi input
         JLabel usernameLabel = new JLabel("Nome Utente / Email:");
         JLabel passwordLabel = new JLabel("Password:");
 

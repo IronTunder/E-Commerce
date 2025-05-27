@@ -65,26 +65,4 @@ public class ProductsController {
         return prodotti;
     }
 
-
-//    public boolean rimuoviProdotto(String id) {
-//        // Crea una copia della lista per evitare ConcurrentModificationException
-//        List<Prodotto> prodottiDaRimuovere = new ArrayList<>();
-//
-//        for (Prodotto p : prodotti) {
-//            if (p.getId().equals(id)) {
-//                prodottiDaRimuovere.add(p);
-//            }
-//        }
-//
-//        boolean rimosso = false;
-//        for (Prodotto p : prodottiDaRimuovere) {
-//            rimosso = prodotti.remove(p) || rimosso;
-//        }
-//
-//        if (rimosso) {
-//            salvaProdotti();
-//        }
-//
-//        return rimosso;
-//    }
 }
