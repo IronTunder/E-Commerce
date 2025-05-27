@@ -121,7 +121,7 @@ public class InterfacciaCart extends JFrame {
                 indirizzoDialog.setLayout(new GridLayout(2, 1, 10, 10));
                 JButton submitButton = new JButton("Salva");
                 JTextField indirizzoText = new JTextField();
-                indirizzoDialog.setIconImage(new ImageIcon("./icon.png").getImage());
+                indirizzoDialog.setIconImage(new ImageIcon("src/icon.png").getImage());
                 indirizzoDialog.setTitle("Inserisci l'indirizzo di spedizione");
                 indirizzoDialog.add(indirizzoText);
                 indirizzoDialog.add(submitButton);

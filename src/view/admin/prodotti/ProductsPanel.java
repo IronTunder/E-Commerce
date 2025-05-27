@@ -12,7 +12,7 @@ public class ProductsPanel extends JFrame {
         super("Pannello Amministratore");
         ProductsController productsController = homePage.getFileManager();
         setResizable(false);
-        setIconImage(new ImageIcon("./icon.png").getImage());
+        setIconImage(new ImageIcon("src/icon.png").getImage());
         setLayout(new BorderLayout());
         setSize(900, 720);
         setLocationRelativeTo(this);

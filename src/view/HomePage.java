@@ -31,7 +31,7 @@ public class HomePage extends JFrame implements ActionListener {
     public HomePage() {
         super("Nucifora's Hub");
         setLayout(new BorderLayout());
-        setIconImage(new ImageIcon("./icon.png").getImage());
+        setIconImage(new ImageIcon("src/icon.png").getImage());
         PannelloLaterale pannelloLaterale = new PannelloLaterale(this);
         add(pannelloLaterale, BorderLayout.WEST);
         JPanel mainPanel = new JPanel();
@@ -418,6 +418,6 @@ public class HomePage extends JFrame implements ActionListener {
     }
 
     public Image getIconImage() {
-        return new ImageIcon("./icon.png").getImage();
+        return new ImageIcon("src/icon.png").getImage();
     }
 }
