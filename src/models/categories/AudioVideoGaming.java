@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class AudioVideoGaming extends Prodotto {
+    private static final long serialVersionUID = -1732569404899834603L;
     private final String tipoProdotto;
     private final int pollici;
     private final int hz;
