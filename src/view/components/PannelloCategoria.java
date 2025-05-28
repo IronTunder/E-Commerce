@@ -30,13 +30,13 @@ public class PannelloCategoria extends JPanel{
         setBackground(new Color(240, 240, 240));
         setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Titolo della categoria
+
         JLabel titolo = new JLabel(titoloCategoria);
         titolo.setFont(new Font("Arial", Font.BOLD, 18));
         titolo.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         add(titolo, BorderLayout.NORTH);
 
-        // Pannello prodotti con WRAPPER per lo scroll
+
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(new Color(240, 240, 240));
 
@@ -44,7 +44,7 @@ public class PannelloCategoria extends JPanel{
         prodottiPanel.setLayout(new BoxLayout(prodottiPanel, BoxLayout.X_AXIS));
         prodottiPanel.setBackground(new Color(240, 240, 240));
 
-        // Limita a 10 prodotti per categoria per evitare overflow
+
         int maxProdotti = Math.min(prodotti.size(), 10);
         for (int i = 0; i < maxProdotti; i++) {
             JPanel prodottoCard = creaProdottoCard(prodotti.get(i));
@@ -52,20 +52,20 @@ public class PannelloCategoria extends JPanel{
             prodottiPanel.add(Box.createRigidArea(new Dimension(15, 0)));
         }
 
-        // Aggiungi spazio flessibile a destra
+
         prodottiPanel.add(Box.createHorizontalGlue());
 
         wrapper.add(prodottiPanel, BorderLayout.CENTER);
 
-        // Configurazione dello scroll pane
+
         JScrollPane scrollPane = new JScrollPane(wrapper);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 
-        // Imposta dimensioni fisse per lo scrollpane
-        scrollPane.setPreferredSize(new Dimension(800, 300)); // Larghezza fissa
+
+        scrollPane.setPreferredSize(new Dimension(800, 300));
 
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -105,7 +105,7 @@ public class PannelloCategoria extends JPanel{
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // Immagine placeholder
+
         JLabel imgLabel = new JLabel("Caricamento...", SwingConstants.CENTER);
         imgLabel.setPreferredSize(new Dimension(160, 100));
 
@@ -130,18 +130,18 @@ public class PannelloCategoria extends JPanel{
             }
         }).start();
 
-        // Info prodotto base
+
         JLabel nomeLabel = new JLabel(prodotto.getNome());
         JLabel prezzoLabel = new JLabel("€ " + String.format("%.2f", prodotto.getPrezzo()), SwingConstants.RIGHT);
         nomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setForeground(new Color(0, 100, 0));
 
-        // Pannello per gli attributi specifici
+
         JPanel attributiPanel = new JPanel();
         attributiPanel.setLayout(new BoxLayout(attributiPanel, BoxLayout.Y_AXIS));
 
-        // Aggiungi attributi in base alla categoria
+
         switch(prodotto.getCategoria()) {
             case "ComponentiPC":
                 if(prodotto instanceof ComponentiPC) {

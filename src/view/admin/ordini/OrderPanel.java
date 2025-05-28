@@ -40,7 +40,7 @@ public class OrderPanel extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(new Color(248, 248, 248));
 
-        // Title panel
+
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titlePanel.setBackground(new Color(248, 248, 248));
         JLabel titleLabel = new JLabel("Gestione Ordini");
@@ -49,7 +49,7 @@ public class OrderPanel extends JFrame {
         titlePanel.add(titleLabel);
         mainPanel.add(titlePanel, BorderLayout.NORTH);
 
-        // Orders panel (scrollable)
+
         JPanel ordersPanel = new JPanel();
         ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
         ordersPanel.setBackground(new Color(248, 248, 248));
@@ -97,7 +97,7 @@ public class OrderPanel extends JFrame {
         orderPanel.setBackground(Color.WHITE);
         orderPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
 
-        // Order info panel
+
         JPanel infoPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         infoPanel.setBackground(Color.WHITE);
 
@@ -123,7 +123,7 @@ public class OrderPanel extends JFrame {
         infoPanel.add(addressLabel);
         infoPanel.add(totalLabel);
 
-        // Products panel
+
         JPanel productsPanel = new JPanel(new BorderLayout());
         productsPanel.setBackground(Color.WHITE);
 
@@ -143,7 +143,7 @@ public class OrderPanel extends JFrame {
         productsPanel.add(new JLabel("Prodotti:"), BorderLayout.NORTH);
         productsPanel.add(listScrollPane, BorderLayout.CENTER);
 
-        // Status and buttons panel
+
         JPanel statusPanel = new JPanel(new BorderLayout(10, 10));
         statusPanel.setBackground(Color.WHITE);
 
@@ -170,7 +170,7 @@ public class OrderPanel extends JFrame {
         statusPanel.add(statusLabel, BorderLayout.CENTER);
         statusPanel.add(shipButton, BorderLayout.EAST);
 
-        // Main content panel
+
         JPanel contentPanel = new JPanel(new BorderLayout(15, 10));
         contentPanel.setBackground(Color.WHITE);
         contentPanel.add(infoPanel, BorderLayout.WEST);
@@ -185,9 +185,9 @@ public class OrderPanel extends JFrame {
     private Color getStatusColor(String stato) {
         switch (stato) {
             case "Spedito":
-                return new Color(0, 128, 0); // Verde
+                return new Color(0, 128, 0);
             case "In elaborazione":
-                return new Color(255, 165, 0); // Arancione
+                return new Color(255, 165, 0);
             case "Annullato":
                 return Color.RED;
             default:

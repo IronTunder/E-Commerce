@@ -59,28 +59,35 @@ src/
 │       └── UsatoGarantito.java
 ├── view/              # Interfaccia grafica
 │   ├── admin/         # Pannelli admin
-│       ├── ordini/
-│           └── OrderPanel.java
-│       └── prodotti/  # Pannelli prodotti
-│           ├── BottoniInserimento.java
-│           ├── ElencoMagazzino.java
-│           ├── Inserimento.java
-│           └── ProductsPanel.java
-│
+│   │   ├── ordini/
+│   │       └── OrderPanel.java
+│   │   └── prodotti/  # Pannelli prodotti
+│   │       ├── BottoniInserimento.java
+│   │       ├── ElencoMagazzino.java
+│   │       ├── Inserimento.java
+│   │       └── ProductsPanel.java
+│   │
 │   ├── auth/          # Schermate login/registrazione
-│       ├── InterfacciaAuth.java
-│       ├── Login.java
-│       └── Registrazione.java
+│   │   ├── InterfacciaAuth.java
+│   │   ├── Login.java
+│   │   └── Registrazione.java
 │   ├── carrello/      # Gestione carrello
-│       └── InterfacciaCart.java
+│   │   └── InterfacciaCart.java
 │   ├── components/    # Componenti riutilizzabili
-│       ├── PannelloCategoria.java
-│       └── PannelloLaterale.java
+│   │   ├── PannelloCategoria.java
+│   │   └── PannelloLaterale.java
 │   ├── prodotto/      # Vista dettaglio prodotto
-│       ├── Prodottopanel.java
+│   │   ├── Prodottopanel.java
 │   └── HomePage.java  # Schermata principale
 │App.java # Main
+└──
 ```
+
+## Diagramma UML 
+![Diagramma UML](https://github.com/user-attachments/assets/6fb7fab2-1a39-4a33-8546-f0b9ff792665)
+
+## Diagramma di sequenza 
+![Diagramma di Sequenza](https://github.com/user-attachments/assets/d5438b8c-d6a1-405e-8adb-8de1505ae8aa)
 
 ## Requisiti di Sistema
 

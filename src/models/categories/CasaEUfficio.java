@@ -4,10 +4,10 @@ import src.models.Prodotto;
 
 import javax.swing.*;
 
-// stampanti, sccanner ...
+
 public class CasaEUfficio extends Prodotto {
-    private final String tecnologia;             //
-    private final int velocitaStampaPPM;         // quante pagine stampa per minuto
+    private final String tecnologia;
+    private final int velocitaStampaPPM;
     private final boolean fronteRetroAutomatico;
     private final boolean wifiIntegrato;
 

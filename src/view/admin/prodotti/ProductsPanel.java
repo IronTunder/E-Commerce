@@ -12,12 +12,12 @@ public class ProductsPanel extends JFrame {
         super("Pannello Amministratore");
         ProductsController productsController = homePage.getFileManager();
         setResizable(false);
-        setIconImage(new ImageIcon("./icon.png").getImage());
+        setIconImage(new ImageIcon("src/icon.png").getImage());
         setLayout(new BorderLayout());
         setSize(900, 720);
         setLocationRelativeTo(this);
 
-        // Pannello principale con bordo
+
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setBackground(new Color(240, 240, 240));
@@ -27,18 +27,18 @@ public class ProductsPanel extends JFrame {
         ElencoMagazzino elencoMagazzino = new ElencoMagazzino(productsController.getProdotti());
         BottoniInserimento bottoniInserimento = new BottoniInserimento(inserimento, elencoMagazzino, homePage);
 
-        // Stilizzazione componenti
+
         inserimento.setBackground(new Color(240, 240, 240));
         elencoMagazzino.setBackground(new Color(240, 240, 240));
         bottoniInserimento.setBackground(new Color(240, 240, 240));
 
-        // Area di testo con scroll
+
         JScrollPane scrollPane = new JScrollPane(elencoMagazzino.getTextArea());
         scrollPane.setBorder(BorderFactory.createTitledBorder("Elenco Prodotti"));
         elencoMagazzino.remove(elencoMagazzino.getTextArea());
         elencoMagazzino.add(scrollPane);
 
-        // Aggiunta dei componenti al pannello principale
+
         JPanel northPanel = new JPanel(new BorderLayout());
         northPanel.add(new JLabel("Inserimento Prodotti", JLabel.CENTER), BorderLayout.NORTH);
         northPanel.add(inserimento, BorderLayout.CENTER);
