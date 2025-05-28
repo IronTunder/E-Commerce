@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class AccessoriPC extends Prodotto {
+    private static final long serialVersionUID = -6382545647447956910L;
     private final String tipoAccessorio;
     private final String connettivita;
     private final boolean rgb;
@@ -53,13 +54,23 @@ public class AccessoriPC extends Prodotto {
         return compatibilitaSistema;
     }
 
-
     public String getDimensioni() {
         return dimensioni;
     }
 
     public boolean isErgonomico() {
         return ergonomico;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Tipo: " + tipoAccessorio +
+                " | Connettività: " + connettivita +
+                " | RGB: " + (rgb ? "Sì" : "No") +
+                " | Compatibilità: " + compatibilitaSistema +
+                " | Dimensioni: " + dimensioni +
+                " | Ergonomico: " + (ergonomico ? "Sì" : "No");
     }
 
 }

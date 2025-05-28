@@ -85,24 +85,21 @@ public class InterfacciaAuth extends JFrame {
             }
         } else {
             if (loginPanel.validaLogin()) {
-                try {
-                    if(authController.accedi(loginPanel.getUsername(),loginPanel.getPassword())){
-                        if (authController.isLoggedIn() && authController.getLogin().isAdmininstrator()) {
-                            JOptionPane.showMessageDialog(this,
-                                    "Accesso come amministratore effettuato con successo!",
-                                    "Benvenuto Admin",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(this, "Accesso completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
-                        }
+                if(authController.accedi(loginPanel.getUsername(),loginPanel.getPassword())){
+                    if (authController.isLoggedIn() && authController.getLogin().isAdmininstrator()) {
+                        JOptionPane.showMessageDialog(this,
+                                "Accesso come amministratore effettuato con successo!",
+                                "Benvenuto Admin",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
                     }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, "Errore durante l'accesso (Controlla le credenziali o registrati!)", "Errore", JOptionPane.ERROR_MESSAGE);
-                    throw new RuntimeException(e);
+                    else{
+                        JOptionPane.showMessageDialog(this, "Accesso completata con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                    }
                 }
+                else
+                    JOptionPane.showMessageDialog(this, "Errore durante l'accesso (Controlla le credenziali o registrati!)", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -111,11 +108,6 @@ public class InterfacciaAuth extends JFrame {
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.next(cardPanel);
         aggiornaStatoBottoni();
-    }
-
-    private void mostraPannelloRegistrazione() {
-        CardLayout cl = (CardLayout) cardPanel.getLayout();
-        cl.show(cardPanel, "Registrazione");
     }
 
     public void mostraPannelloLogin() {

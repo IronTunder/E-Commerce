@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class AccessoriSmartPhone extends Prodotto {
+    private static final long serialVersionUID = 6884949766886544946L;
     private final String tipoMateriale;
     private final int capacitaPowerBank;
     private final boolean ricaricaWireless;
@@ -40,5 +41,14 @@ public class AccessoriSmartPhone extends Prodotto {
 
     public boolean isMagnetico() {
         return magnetico;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Materiale: " + tipoMateriale +
+                " | Capacità PowerBank: " + (capacitaPowerBank > 0 ? capacitaPowerBank + "mAh" : "N/A") +
+                " | Wireless: " + (ricaricaWireless ? "Sì" : "No") +
+                " | Magnetico: " + (magnetico ? "Sì" : "No");
     }
 }

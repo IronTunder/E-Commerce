@@ -42,11 +42,6 @@ public abstract class Prodotto implements Serializable {
         this.descrizioneOggetto = descrizioneOggetto;
     }
 
-
-    public String getIcon() {
-        return urlImage;
-    }
-
     public String getCategoria() {
         return categoria;
     }
@@ -75,15 +70,8 @@ public abstract class Prodotto implements Serializable {
 
     @Override
     public String toString() {
-        return "Prodotto{" +
-                "nome='" + nome + '\'' +
-                ", id='" + id + '\'' +
-                ", marca='" + marca + '\'' +
-                ", categoria='" + categoria + '\'' +
-                ", urlImage=" + urlImage +
-                ", prezzo=" + prezzo +
-                ", descrizioneOggetto='" + descrizioneOggetto + '\'' +
-                '}';
+        return "Nome: " + nome + " | Id: " + id + " | Categoria: " + categoria + "| Marca: " + marca +
+                " | Url: " + urlImage + " | Prezzo: " + prezzo;
     }
 
     public String getDescrizione() {

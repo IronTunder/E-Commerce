@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class ComponentiPC extends Prodotto {
+    private static final long serialVersionUID = 5405024719507470617L;
     private final String tipoComponente;
     private final String specificaTecnica;
     private final int capacitaGB;
@@ -46,6 +47,15 @@ public class ComponentiPC extends Prodotto {
 
     public String getCompatibilita() {
         return compatibilita;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Tipo: " + tipoComponente +
+                " | Specifiche: " + specificaTecnica +
+                " | Capacità: " + capacitaGB + "GB" +
+                " | Compatibilità: " + compatibilita;
     }
 
 }

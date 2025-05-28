@@ -20,7 +20,7 @@ public class ElencoMagazzino extends JPanel {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 300));
         for (Prodotto prodotto : prodotti) {
-            textArea.append(prodotto.toString());
+            textArea.append(prodotto.toString()+"\n");
         }
         add(new JLabel("Elenco Prodotti", JLabel.CENTER), BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);

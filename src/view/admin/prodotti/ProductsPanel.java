@@ -14,8 +14,9 @@ public class ProductsPanel extends JFrame {
         setResizable(false);
         setIconImage(new ImageIcon("src/icon.png").getImage());
         setLayout(new BorderLayout());
-        setSize(900, 720);
+        setSize(900, 800);
         setLocationRelativeTo(this);
+        toFront();
 
 
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
@@ -40,7 +41,9 @@ public class ProductsPanel extends JFrame {
 
 
         JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(new JLabel("Inserimento Prodotti", JLabel.CENTER), BorderLayout.NORTH);
+        JLabel inserimentoProdotti = new JLabel("Inserimento Prodotti", JLabel.CENTER);
+        inserimentoProdotti.setFont(new Font("Arial", Font.BOLD, 24));
+        northPanel.add(inserimentoProdotti, BorderLayout.NORTH);
         northPanel.add(inserimento, BorderLayout.CENTER);
         northPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 

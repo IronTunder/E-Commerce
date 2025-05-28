@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class NotebookEAccessori extends Prodotto {
+    private static final long serialVersionUID = 6766098186572259433L;
     private double dimensioneDisplayPollici;
     private final String risoluzione;
     private final boolean touchscreen;
@@ -66,6 +67,17 @@ public class NotebookEAccessori extends Prodotto {
 
     public int getRamGB() {
         return ramGB;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Display: " + dimensioneDisplayPollici + "\"" +
+                " | Risoluzione: " + risoluzione +
+                " | Touchscreen: " + (touchscreen ? "Sì" : "No") +
+                " | Autonomia: " + autonomiaOre + "h" +
+                " | CPU: " + cpu +
+                " | RAM: " + ramGB + "GB";
     }
 
 }

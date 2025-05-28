@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class Cavetteria extends Prodotto {
+    private static final long serialVersionUID = -7423486855253626621L;
     private final String tipoConnettori;
     private final double lunghezzaMetri;
     private final boolean supporta4K;
@@ -40,6 +41,15 @@ public class Cavetteria extends Prodotto {
 
     public boolean isRinforzato() {
         return rinforzato;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Connettori: " + tipoConnettori +
+                " | Lunghezza: " + lunghezzaMetri + "m" +
+                " | 4K: " + (supporta4K ? "Sì" : "No") +
+                " | Rinforzato: " + (rinforzato ? "Sì" : "No");
     }
 
 }

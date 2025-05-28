@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
 
 public class PannelloLaterale extends JPanel {
     private final String[] categories = {
-            "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
-            "CasaeUfficio", "Cavetteria", "ComponentiPC",
-            "ComputerDesktop", "Consumabili", "NotebookeAccessori",
-            "UsatoGarantito"
+            "Accessori PC", "Accessori Smart Phone", "Audio Video Gaming",
+            "Casa E Ufficio", "Cavetteria", "Componenti PC",
+            "Computer Desktop", "Consumabili", "Notebook E Accessori",
+            "Usato Garantito"
     };
 
     private final HomePage homePage;
@@ -42,7 +42,7 @@ public class PannelloLaterale extends JPanel {
             if (!e.getValueIsAdjusting()) {
                 String selectedCategory = categoryList.getSelectedValue();
                 if (selectedCategory != null) {
-                    homePage.mostraCategoria(selectedCategory);
+                    homePage.mostraCategoria(selectedCategory.replaceAll("\\s+",""));
                 }
             }
         });
@@ -123,24 +123,49 @@ public class PannelloLaterale extends JPanel {
                     ((double) newWidth / originalIcon.getIconWidth()));
             Image scaledImage = originalIcon.getImage().getScaledInstance(
                     newWidth, newHeight, Image.SCALE_SMOOTH);
-            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-            logoLabel.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    homePage.mostraHomePage();
-                }
-            });
-
-            JPanel logoPanel = new JPanel(new BorderLayout());
-            logoPanel.setBackground(new Color(50, 50, 50));
-            logoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
-            logoPanel.add(logoLabel, BorderLayout.CENTER);
+            JPanel logoPanel = getJPanel(scaledImage);
             add(logoPanel, BorderLayout.SOUTH);
 
 
         } catch (Exception e) {
             System.err.println("Errore nel caricamento del logo: " + e.getMessage());
         }
+    }
+
+    private JPanel getJPanel(Image scaledImage) {
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        logoLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                homePage.mostraHomePage();
+            }
+        });
+
+        logoLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                logoLabel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(205, 205, 205)),
+                        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                ));
+            }
+        });
+
+        logoLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                logoLabel.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(50, 50, 50)),
+                        BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                ));
+            }
+        });
+
+        JPanel logoPanel = new JPanel(new BorderLayout());
+        logoPanel.setBackground(new Color(50, 50, 50));
+        logoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        logoPanel.add(logoLabel, BorderLayout.CENTER);
+        return logoPanel;
     }
 }

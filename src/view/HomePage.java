@@ -39,16 +39,16 @@ public class HomePage extends JFrame implements ActionListener {
         mainPanel.setBackground(new Color(240, 240, 240));
 
         String[] categorie = {
-                "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
-                "CasaeUfficio", "Cavetteria", "ComponentiPC",
-                "ComputerDesktop", "Consumabili", "NotebookeAccessori",
-                "UsatoGarantito"
+                "Accessori PC", "Accessori SmartPhone", "Audio Video Gaming",
+                "Casa E Ufficio", "Cavetteria", "Componenti PC",
+                "Computer Desktop", "Consumabili", "Notebook E Accessori",
+                "Usato Garantito"
         };
         productsController.caricaProdotti();
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
             for (Prodotto p : productsController.getProdotti()) {
-                if(p.getCategoria().equals(categoria)) {
+                if(p.getCategoria().equalsIgnoreCase(categoria.replaceAll("\\s+",""))){
                     System.out.println(p);
                     prodotti.add(p);
                 }
@@ -91,16 +91,16 @@ public class HomePage extends JFrame implements ActionListener {
         mainPanel.setBackground(new Color(240, 240, 240));
 
         String[] categorie = {
-                "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
-                "CasaeUfficio", "Cavetteria", "ComponentiPC",
-                "ComputerDesktop", "Consumabili", "NotebookeAccessori",
-                "UsatoGarantito"
+                "Accessori PC", "Accessori SmartPhone", "Audio Video Gaming",
+                "Casa E Ufficio", "Cavetteria", "Componenti PC",
+                "Computer Desktop", "Consumabili", "Notebook E Accessori",
+                "Usato Garantito"
         };
 
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
             for (Prodotto p : productsController.getProdotti()) {
-                if(p.getCategoria().equals(categoria)) {
+                if(p.getCategoria().equalsIgnoreCase(categoria.replaceAll("\\s+",""))){
                     prodotti.add(p);
                 }
             }
@@ -158,7 +158,12 @@ public class HomePage extends JFrame implements ActionListener {
                 adminButton.setActionCommand("AdminPanel");
                 adminButton.setBackground(new Color(200, 0, 0));
                 adminButton.setForeground(Color.WHITE);
-                adminButton.addActionListener(this);
+                adminButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        mostraPannelloProdotti();
+                    }
+                });
                 leftPanel.add(adminButton);
 
 
@@ -239,7 +244,6 @@ public class HomePage extends JFrame implements ActionListener {
         if(productsPanel != null)
             productsPanel.dispose();
         productsPanel = new ProductsPanel(this);
-        productsPanel.toFront();
     }
 
     public void mostraProdotto(Prodotto prodotto) {
@@ -272,16 +276,16 @@ public class HomePage extends JFrame implements ActionListener {
         mainPanel.setBackground(new Color(240, 240, 240));
 
         String[] categorie = {
-                "AccessoriPC", "AccessoriSmartPhone", "Audio,VideoeGaming",
-                "CasaeUfficio", "Cavetteria", "ComponentiPC",
-                "ComputerDesktop", "Consumabili", "NotebookeAccessori",
-                "UsatoGarantito"
+                "Accessori PC", "Accessori SmartPhone", "Audio Video Gaming",
+                "Casa E Ufficio", "Cavetteria", "Componenti PC",
+                "Computer Desktop", "Consumabili", "Notebook E Accessori",
+                "Usato Garantito"
         };
 
         for (String categoria : categorie) {
             ArrayList<Prodotto> prodotti = new ArrayList<>();
             for (Prodotto p : productsController.getProdotti()) {
-                if(p.getCategoria().equals(categoria)) {
+                if(p.getCategoria().equalsIgnoreCase(categoria.replaceAll("\\s+",""))){
                     prodotti.add(p);
                 }
             }
@@ -329,7 +333,7 @@ public class HomePage extends JFrame implements ActionListener {
         }
 
         PannelloCategoria categoriaPanel = new PannelloCategoria(categoria, prodotti, this);
-        categoriaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        categoriaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 400));
         mainPanel.add(categoriaPanel);
         mainPanel.add(Box.createVerticalGlue());
 
@@ -379,9 +383,6 @@ public class HomePage extends JFrame implements ActionListener {
                     }
                 }
                 break;
-            case "AdminPanel":
-                mostraPannelloProdotti();
-                break;
         }
     }
 
@@ -393,24 +394,12 @@ public class HomePage extends JFrame implements ActionListener {
         return authController;
     }
 
-    public ProductsPanel getAdminPanel() {
-        return productsPanel;
-    }
-
     public InterfacciaAuth getInterfacciaAuth() {
         return interfacciaAuth;
     }
 
     public OrdersController getOrdersController() {
         return ordersController;
-    }
-
-    public InterfacciaCart getInterfacciaCart() {
-        return interfacciaCart;
-    }
-
-    public ProductsController getProductsController() {
-        return productsController;
     }
 
     public Image getIconImage() {

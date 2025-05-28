@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class PannelloCategoria extends JPanel{
 
     private JPanel creaProdottoCard(Prodotto prodotto) {
         JPanel card = new JPanel();
-
+        card.setToolTipText("Visualizza " + prodotto.getNome());
         card.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -111,9 +112,7 @@ public class PannelloCategoria extends JPanel{
 
         new Thread(() -> {
             try {
-                ImageIcon originalIcon = new ImageIcon(new URL(prodotto.getUrlImage()));
-                Image scaledImage = originalIcon.getImage().getScaledInstance(
-                        160, 100, Image.SCALE_SMOOTH);
+                Image scaledImage = getImage(prodotto);
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
                 SwingUtilities.invokeLater(() -> {
@@ -132,8 +131,8 @@ public class PannelloCategoria extends JPanel{
 
 
         JLabel nomeLabel = new JLabel(prodotto.getNome());
-        JLabel prezzoLabel = new JLabel("€ " + String.format("%.2f", prodotto.getPrezzo()), SwingConstants.RIGHT);
         nomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        JLabel prezzoLabel = new JLabel("€ " + String.format("%.2f", prodotto.getPrezzo()), SwingConstants.RIGHT);
         prezzoLabel.setFont(new Font("Arial", Font.BOLD, 14));
         prezzoLabel.setForeground(new Color(0, 100, 0));
 
@@ -142,7 +141,7 @@ public class PannelloCategoria extends JPanel{
         attributiPanel.setLayout(new BoxLayout(attributiPanel, BoxLayout.Y_AXIS));
 
 
-        switch(prodotto.getCategoria()) {
+        switch(prodotto.getCategoria().replaceAll("\\s+","")) {
             case "ComponentiPC":
                 if(prodotto instanceof ComponentiPC) {
                     ComponentiPC componente = (ComponentiPC) prodotto;
@@ -164,7 +163,7 @@ public class PannelloCategoria extends JPanel{
                 }
                 break;
 
-            case "NotebookeAccessori":
+            case "NotebookEAccessori":
                 if(prodotto instanceof NotebookEAccessori) {
                     NotebookEAccessori notebook = (NotebookEAccessori) prodotto;
                     attributiPanel.add(new JLabel("Display: " + notebook.getDimensioneDisplayPollici() + "\""));
@@ -200,7 +199,7 @@ public class PannelloCategoria extends JPanel{
                 }
                 break;
 
-            case "Audio,VideoeGaming":
+            case "AudioVideoGaming":
                 if(prodotto instanceof AudioVideoGaming) {
                     AudioVideoGaming av = (AudioVideoGaming) prodotto;
                     attributiPanel.add(new JLabel("Tipo: " + av.getTipoProdotto()));
@@ -211,7 +210,7 @@ public class PannelloCategoria extends JPanel{
                 }
                 break;
 
-            case "CasaeUfficio":
+            case "CasaEUfficio":
                 if(prodotto instanceof CasaEUfficio) {
                     CasaEUfficio casa = (CasaEUfficio) prodotto;
                     attributiPanel.add(new JLabel("Tecnologia: " + casa.getTecnologia()));
@@ -287,12 +286,32 @@ public class PannelloCategoria extends JPanel{
         infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         infoPanel.add(attributiPanel);
         infoPanel.add(prezzoLabel);
-        infoPanel.add(aggiungiAlCarrello);
+
 
         card.add(imgLabel, BorderLayout.NORTH);
         card.add(infoPanel, BorderLayout.CENTER);
-
+        card.add(aggiungiAlCarrello,BorderLayout.SOUTH);
         return card;
+    }
+
+    private static Image getImage(Prodotto prodotto) throws MalformedURLException {
+        ImageIcon originalIcon = new ImageIcon(new URL(prodotto.getUrlImage()));
+        Image originalImage = originalIcon.getImage();
+        int originalWidth = originalIcon.getIconWidth();
+        int originalHeight = originalIcon.getIconHeight();
+
+        int boxWidth = 160;
+        int boxHeight = 100;
+
+        float widthRatio = (float) boxWidth / originalWidth;
+        float heightRatio = (float) boxHeight / originalHeight;
+
+        float scale = Math.min(widthRatio, heightRatio);
+
+        int newWidth = Math.round(originalWidth * scale);
+        int newHeight = Math.round(originalHeight * scale);
+
+        return originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
     }
 
     private JButton creaBottone(String text, String tooltip) {

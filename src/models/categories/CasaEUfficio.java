@@ -6,6 +6,7 @@ import javax.swing.*;
 
 
 public class CasaEUfficio extends Prodotto {
+    private static final long serialVersionUID = 4528761292692648348L;
     private final String tecnologia;
     private final int velocitaStampaPPM;
     private final boolean fronteRetroAutomatico;
@@ -41,6 +42,15 @@ public class CasaEUfficio extends Prodotto {
 
     public boolean isWifiIntegrato() {
         return wifiIntegrato;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Tecnologia: " + tecnologia +
+                " | Velocità Stampa: " + velocitaStampaPPM + "ppm" +
+                " | Fronte/Retro: " + (fronteRetroAutomatico ? "Auto" : "Manuale") +
+                " | WiFi: " + (wifiIntegrato ? "Sì" : "No");
     }
 
 }

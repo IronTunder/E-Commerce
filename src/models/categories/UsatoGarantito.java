@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class UsatoGarantito extends Prodotto {
+    private static final long serialVersionUID = 889446557319955530L;
     private final String statoUsura;
     private final int annoProduzione;
     private final int mesiGaranziaResidua;
@@ -45,4 +46,12 @@ public class UsatoGarantito extends Prodotto {
         return includeAccessoriOriginali;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Stato: " + statoUsura +
+                " | Anno: " + annoProduzione +
+                " | Garanzia: " + mesiGaranziaResidua + " mesi" +
+                " | Accessori: " + (includeAccessoriOriginali ? "Completi" : "Mancanti");
+    }
 }

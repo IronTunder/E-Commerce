@@ -99,16 +99,16 @@ public class Inserimento extends JPanel {
 
     private void initializeCategories() {
 
-        categoriaComboBox.addItem("ComputerDesktop");
-        categoriaComboBox.addItem("AccessoriPC");
-        categoriaComboBox.addItem("ComponentiPC");
-        categoriaComboBox.addItem("UsatoGarantito");
-        categoriaComboBox.addItem("AccessoriSmartPhone");
-        categoriaComboBox.addItem("AudioVideoGaming");
+        categoriaComboBox.addItem("Computer Desktop");
+        categoriaComboBox.addItem("Accessori PC");
+        categoriaComboBox.addItem("Componenti PC");
+        categoriaComboBox.addItem("Usato Garantito");
+        categoriaComboBox.addItem("Accessori SmartPhone");
+        categoriaComboBox.addItem("Audio Video Gaming");
         categoriaComboBox.addItem("Consumabili");
-        categoriaComboBox.addItem("CasaEUfficio");
+        categoriaComboBox.addItem("Casa E Ufficio");
         categoriaComboBox.addItem("Cavetteria");
-        categoriaComboBox.addItem("NotebookEAccessori");
+        categoriaComboBox.addItem("Notebook E Accessori");
 
 
         initializeSpecificFields();
@@ -121,7 +121,7 @@ public class Inserimento extends JPanel {
         JTextField ramField = new JTextField();
         JTextField memoriaField = new JTextField();
         JTextField soField = new JTextField();
-        specificFieldsMap.put("ComputerDesktop", new JComponent[]{
+        specificFieldsMap.put("Computer Desktop", new JComponent[]{
                 new JLabel("CPU:"), cpuField,
                 new JLabel("GPU:"), gpuField,
                 new JLabel("RAM (GB):"), ramField,
@@ -136,7 +136,7 @@ public class Inserimento extends JPanel {
         JTextField compatibilitaField = new JTextField();
         JTextField dimensioniField = new JTextField();
         JCheckBox ergonomicoCheckBox = new JCheckBox();
-        specificFieldsMap.put("AccessoriPC", new JComponent[]{
+        specificFieldsMap.put("Accessori PC", new JComponent[]{
                 new JLabel("Tipo Accessorio:"), tipoAccessorioField,
                 new JLabel("Connettività:"), connettivitaField,
                 new JLabel("RGB:"), rgbCheckBox,
@@ -150,7 +150,7 @@ public class Inserimento extends JPanel {
         JTextField specificaTecnicaField = new JTextField();
         JTextField capacitaGBField = new JTextField();
         JTextField compatibilita2Field = new JTextField();
-        specificFieldsMap.put("ComponentiPC", new JComponent[]{
+        specificFieldsMap.put("Componenti PC", new JComponent[]{
                 new JLabel("Tipo Componente:"), tipoComponenteField,
                 new JLabel("Specifica Tecnica:"), specificaTecnicaField,
                 new JLabel("Capacità (GB):"), capacitaGBField,
@@ -162,7 +162,7 @@ public class Inserimento extends JPanel {
         JTextField annoProduzioneField = new JTextField();
         JTextField mesiGaranziaField = new JTextField();
         JCheckBox accessoriOriginaliCheckBox = new JCheckBox();
-        specificFieldsMap.put("UsatoGarantito", new JComponent[]{
+        specificFieldsMap.put("Usato Garantito", new JComponent[]{
                 new JLabel("Stato Usura:"), statoUsuraField,
                 new JLabel("Anno Produzione:"), annoProduzioneField,
                 new JLabel("Mesi Garanzia:"), mesiGaranziaField,
@@ -174,7 +174,7 @@ public class Inserimento extends JPanel {
         JTextField capacitaPowerBankField = new JTextField();
         JCheckBox ricaricaWirelessCheckBox = new JCheckBox();
         JCheckBox magneticoCheckBox = new JCheckBox();
-        specificFieldsMap.put("AccessoriSmartPhone", new JComponent[]{
+        specificFieldsMap.put("Accessori SmartPhone", new JComponent[]{
                 new JLabel("Tipo Materiale:"), tipoMaterialeField,
                 new JLabel("Capacità PowerBank:"), capacitaPowerBankField,
                 new JLabel("Ricarica Wireless:"), ricaricaWirelessCheckBox,
@@ -187,7 +187,7 @@ public class Inserimento extends JPanel {
         JTextField hzField = new JTextField();
         JCheckBox supportaHDRCheckBox = new JCheckBox();
         JCheckBox wirelessCheckBox = new JCheckBox();
-        specificFieldsMap.put("AudioVideoGaming", new JComponent[]{
+        specificFieldsMap.put("Audio Video Gaming", new JComponent[]{
                 new JLabel("Tipo Prodotto:"), tipoProdottoField,
                 new JLabel("Pollici:"), polliciField,
                 new JLabel("Hz:"), hzField,
@@ -208,7 +208,7 @@ public class Inserimento extends JPanel {
         JTextField velocitaStampaField = new JTextField();
         JCheckBox fronteRetroCheckBox = new JCheckBox();
         JCheckBox wifiIntegratoCheckBox = new JCheckBox();
-        specificFieldsMap.put("CasaEUfficio", new JComponent[]{
+        specificFieldsMap.put("Casa E Ufficio", new JComponent[]{
                 new JLabel("Tecnologia:"), tecnologiaField,
                 new JLabel("Velocità Stampa (PPM):"), velocitaStampaField,
                 new JLabel("Fronte/Retro:"), fronteRetroCheckBox,
@@ -234,7 +234,7 @@ public class Inserimento extends JPanel {
         JTextField autonomiaField = new JTextField();
         JTextField cpu2Field = new JTextField();
         JTextField ram2Field = new JTextField();
-        specificFieldsMap.put("NotebookEAccessori", new JComponent[]{
+        specificFieldsMap.put("Notebook E Accessori", new JComponent[]{
                 new JLabel("Dimensione Display (pollici):"), dimensioneDisplayField,
                 new JLabel("Risoluzione:"), risoluzioneField,
                 new JLabel("Touchscreen:"), touchscreenCheckBox,
@@ -287,9 +287,9 @@ public class Inserimento extends JPanel {
             String selectedCategory = (String) categoriaComboBox.getSelectedItem();
             JComponent[] fields = specificFieldsMap.get(selectedCategory);
             switch (Objects.requireNonNull(selectedCategory)) {
-                case "ComputerDesktop":
+                case "Computer Desktop":
                     return new ComputerDesktop(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             ((JTextField) fields[3]).getText(),
@@ -298,9 +298,9 @@ public class Inserimento extends JPanel {
                             ((JTextField) fields[9]).getText()
                     );
 
-                case "AccessoriPC":
+                case "Accessori PC":
                     return new AccessoriPC(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             ((JTextField) fields[3]).getText(),
@@ -310,9 +310,9 @@ public class Inserimento extends JPanel {
                             ((JCheckBox) fields[11]).isSelected()
                     );
 
-                case "ComponentiPC":
+                case "Componenti PC":
                     return new ComponentiPC(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             ((JTextField) fields[3]).getText(),
@@ -320,9 +320,9 @@ public class Inserimento extends JPanel {
                             ((JTextField) fields[7]).getText()
                     );
 
-                case "UsatoGarantito":
+                case "Usato Garantito":
                     return new UsatoGarantito(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             Integer.parseInt(((JTextField) fields[3]).getText()),
@@ -330,9 +330,9 @@ public class Inserimento extends JPanel {
                             ((JCheckBox) fields[7]).isSelected()
                     );
 
-                case "AccessoriSmartPhone":
+                case "Accessori SmartPhone":
                     return new AccessoriSmartPhone(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             Integer.parseInt(((JTextField) fields[3]).getText()),
@@ -340,9 +340,9 @@ public class Inserimento extends JPanel {
                             ((JCheckBox) fields[7]).isSelected()
                     );
 
-                case "AudioVideoGaming":
+                case "Audio Video Gaming":
                     return new AudioVideoGaming(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             Integer.parseInt(((JTextField) fields[3]).getText()),
@@ -353,15 +353,15 @@ public class Inserimento extends JPanel {
 
                 case "Consumabili":
                     return new Consumabili(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             Double.parseDouble(((JTextField) fields[1]).getText()),
                             ((JTextField) fields[3]).getText()
                     );
 
-                case "CasaEUfficio":
+                case "Casa E Ufficio":
                     return new CasaEUfficio(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             Integer.parseInt(((JTextField) fields[3]).getText()),
@@ -371,7 +371,7 @@ public class Inserimento extends JPanel {
 
                 case "Cavetteria":
                     return new Cavetteria(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             ((JTextField) fields[1]).getText(),
                             Double.parseDouble(((JTextField) fields[3]).getText()),
@@ -379,9 +379,9 @@ public class Inserimento extends JPanel {
                             ((JCheckBox) fields[7]).isSelected()
                     );
 
-                case "NotebookEAccessori":
+                case "Notebook E Accessori":
                     return new NotebookEAccessori(
-                            nome.getText(), id.getText(), marca.getText(), selectedCategory,
+                            nome.getText(), id.getText(), marca.getText(), selectedCategory.replaceAll("\\s+",""),
                             urlImage.getText(), Double.parseDouble(prezzo.getText()), descrizione.getText(),
                             Double.parseDouble(((JTextField) fields[1]).getText()),
                             ((JTextField) fields[3]).getText(),
@@ -392,7 +392,7 @@ public class Inserimento extends JPanel {
                     );
 
                 default:
-                    throw new IllegalArgumentException("Categoria non supportata: " + selectedCategory);
+                    throw new IllegalArgumentException("Categoria non supportata: " + selectedCategory.replaceAll("\\s+",""));
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Inserire valori numerici validi!", "Errore", JOptionPane.ERROR_MESSAGE);

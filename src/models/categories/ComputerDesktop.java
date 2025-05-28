@@ -5,6 +5,7 @@ import src.models.Prodotto;
 import javax.swing.*;
 
 public class ComputerDesktop extends Prodotto {
+    private static final long serialVersionUID = -4409146457551508355L;
     private final String cpu;
     private final String gpu;
     private final int ramGB;
@@ -56,6 +57,16 @@ public class ComputerDesktop extends Prodotto {
 
     public String getSO() {
         return SO;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | CPU: " + cpu +
+                " | GPU: " + gpu +
+                " | RAM: " + ramGB + "GB" +
+                " | Memoria: " + memoriaGB + "GB" +
+                " | SO: " + SO;
     }
 
 }

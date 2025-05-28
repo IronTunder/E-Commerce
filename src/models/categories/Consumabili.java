@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class Consumabili extends Prodotto {
 
+    private static final long serialVersionUID = 5262222115972386819L;
     private final double quantita;
     private final String unitaDiMisura;
 
@@ -27,5 +28,11 @@ public class Consumabili extends Prodotto {
 
     public String getUnitaDiMisura() {
         return unitaDiMisura;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Quantità: " + quantita + " " + unitaDiMisura;
     }
 }

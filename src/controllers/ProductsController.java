@@ -37,7 +37,9 @@ public class ProductsController {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             List<Prodotto> caricati = (List<Prodotto>) ois.readObject();
             prodotti.addAll(caricati);
-            System.out.println("Prodotti caricati: " + prodotti);
+            for (Prodotto prodotto : prodotti) {
+                System.out.println(prodotto.toString());
+            }
         }catch (EOFException e){
             System.out.println("File vuoto");
         }

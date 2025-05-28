@@ -28,9 +28,9 @@ public class ProdottoPanel extends JPanel {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(new Color(240, 240, 240));
 
-        JButton backButton = new JButton("← Torna ai prodotti");
-        backButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        JButton backButton = creaBottone("Torna alla Home","<- Torna indietro");
         backButton.addActionListener(e -> homePage.mostraHomePage());
+        backButton.setPreferredSize(new Dimension(150,30));
         topPanel.add(backButton);
 
         add(topPanel, BorderLayout.NORTH);
@@ -52,8 +52,7 @@ public class ProdottoPanel extends JPanel {
         new Thread(() -> {
             try {
                 ImageIcon originalIcon = new ImageIcon(new URL(prodotto.getUrlImage()));
-                Image scaledImage = originalIcon.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH);
-                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+                ImageIcon scaledIcon = new ImageIcon(getImage(originalIcon));
 
                 SwingUtilities.invokeLater(() -> {
                     imageLabel.setIcon(scaledIcon);
@@ -143,7 +142,7 @@ public class ProdottoPanel extends JPanel {
                 }
                 break;
 
-            case "NotebookeAccessori":
+            case "NotebookEAccessori":
                 if(prodotto instanceof NotebookEAccessori) {
                     NotebookEAccessori notebook = (NotebookEAccessori) prodotto;
                     attributiPanel.add(creaLabelSpecifica("Display:", notebook.getDimensioneDisplayPollici() + "\""));
@@ -179,7 +178,7 @@ public class ProdottoPanel extends JPanel {
                 }
                 break;
 
-            case "Audio,VideoeGaming":
+            case "AudioVideoGaming":
                 if(prodotto instanceof AudioVideoGaming) {
                     AudioVideoGaming av = (AudioVideoGaming) prodotto;
                     attributiPanel.add(creaLabelSpecifica("Tipo:", av.getTipoProdotto()));
@@ -190,7 +189,7 @@ public class ProdottoPanel extends JPanel {
                 }
                 break;
 
-            case "CasaeUfficio":
+            case "CasaEUfficio":
                 if(prodotto instanceof CasaEUfficio) {
                     CasaEUfficio casa = (CasaEUfficio) prodotto;
                     attributiPanel.add(creaLabelSpecifica("Tecnologia:", casa.getTecnologia()));
@@ -237,10 +236,7 @@ public class ProdottoPanel extends JPanel {
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
 
-        JButton addToCartButton = new JButton("Aggiungi al carrello");
-        addToCartButton.setFont(new Font("Arial", Font.BOLD, 16));
-        addToCartButton.setBackground(new Color(255, 153, 0));
-        addToCartButton.setForeground(Color.WHITE);
+        JButton addToCartButton = creaBottone("Aggiungi al carrello","Aggiungi " + prodotto.getNome() + " al carrello");
         addToCartButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         addToCartButton.setPreferredSize(new Dimension(200, 40));
         addToCartButton.addActionListener(e -> {
@@ -263,6 +259,26 @@ public class ProdottoPanel extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
+    private static Image getImage(ImageIcon originalIcon) {
+        Image originalImage = originalIcon.getImage();
+        int originalWidth = originalIcon.getIconWidth();
+        int originalHeight = originalIcon.getIconHeight();
+
+        int boxWidth = 400;
+        int boxHeight = 400;
+
+        float widthRatio = (float) boxWidth / originalWidth;
+        float heightRatio = (float) boxHeight / originalHeight;
+
+        float scale = Math.min(widthRatio, heightRatio);
+
+        int newWidth = Math.round(originalWidth * scale);
+        int newHeight = Math.round(originalHeight * scale);
+
+        Image scaledIcon = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        return scaledIcon;
+    }
+
     private JPanel creaLabelSpecifica(String nome, String valore) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
@@ -278,5 +294,19 @@ public class ProdottoPanel extends JPanel {
         panel.add(valoreLabel, BorderLayout.CENTER);
 
         return panel;
+    }
+
+    private JButton creaBottone(String text, String tooltip) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(100, 30));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(100, 100, 100));
+        button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        button.setFocusable(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setToolTipText(tooltip);
+        button.setActionCommand(text);
+        return button;
     }
 }
