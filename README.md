@@ -83,6 +83,12 @@ src/
 └──
 ```
 
+## Diagramma UML 
+![Diagramma UML](https://github.com/user-attachments/assets/6fb7fab2-1a39-4a33-8546-f0b9ff792665)
+
+## Diagramma di sequenza 
+![Diagramma di Sequenza](https://github.com/user-attachments/assets/d5438b8c-d6a1-405e-8adb-8de1505ae8aa)
+
 ## Requisiti di Sistema
 
 - Java JDK 8 o superiore
