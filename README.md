@@ -89,6 +89,9 @@ src/
 ## Diagramma di sequenza 
 ![Diagramma di Sequenza](https://github.com/user-attachments/assets/d5438b8c-d6a1-405e-8adb-8de1505ae8aa)
 
+## Diagramma dei casi d'uso 
+![Use case temp_progetto drawio (1)](https://github.com/user-attachments/assets/91dc61a7-b37c-4237-8581-f02528dda24f)
+
 ## Requisiti di Sistema
 
 - Java JDK 8 o superiore
