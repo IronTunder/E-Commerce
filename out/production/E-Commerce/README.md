@@ -1,6 +1,6 @@
 # Nucifora's Hub - E-Commerce Application
 
-!![image](https://github.com/user-attachments/assets/a88a411a-8dd7-456d-b234-917f97fe6bc5)
+![image](https://github.com/user-attachments/assets/d6f85531-2086-4ac4-946c-c40c98fdeea3)
 
 ## Descrizione del Progetto
 
@@ -88,6 +88,9 @@ src/
 
 ## Diagramma di sequenza 
 ![Diagramma di Sequenza](https://github.com/user-attachments/assets/d5438b8c-d6a1-405e-8adb-8de1505ae8aa)
+
+## Diagramma dei casi d'uso 
+![Use case temp_progetto drawio (1)](https://github.com/user-attachments/assets/91dc61a7-b37c-4237-8581-f02528dda24f)
 
 ## Requisiti di Sistema
 
