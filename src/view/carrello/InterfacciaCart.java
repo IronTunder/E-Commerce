@@ -590,7 +590,6 @@ public class InterfacciaCart extends JFrame {
                             "</div></html>",
                     "Acquisto completato",
                     JOptionPane.INFORMATION_MESSAGE);
-
             updateCartDisplay();
             this.dispose();
         }
